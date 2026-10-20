@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GDM Proposta</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0F150D">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/assets/css/sheets.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1E8C2"/><stop offset="1" stop-color="#B89C5E"/></linearGradient></defs></svg>
+<div class="lights" aria-hidden="true"><span class="l1"></span><span class="l2"></span><span class="l3"></span></div>
+<div class="spot" aria-hidden="true"></div>
+
+<!-- Vinheta de entrada (montada por intro.js) -->
+<script src="/assets/js/intro.js"></script>
+<script>if (!GDMIntro.seen("gdm-vinheta")) GDMIntro.mount();</script>
+
+<!-- Acesso -->
+<div class="gate" id="gate" hidden>
+  <form class="gate-card glass" id="gateForm" autocomplete="on">
+    <img src="/assets/img/logo-claro.webp" alt="GDM Estratégia Fiscal" class="gate-logo">
+    <div>
+      <h2>Acesso ao painel</h2>
+      <p>Digite a senha para criar e enviar propostas. Neste aparelho ela fica salva.</p>
+    </div>
+    <div class="field">
+      <label for="senha">Senha</label>
+      <div class="pw">
+        <input id="senha" name="password" type="password" autocomplete="current-password" required>
+        <button type="button" id="pwToggle" aria-label="Mostrar senha">Mostrar</button>
+      </div>
+    </div>
+    <button class="btn btn-gold" type="submit" id="gateBtn">Entrar</button>
+    <p class="gate-err" id="gateErr" role="alert"></p>
+  </form>
+</div>
+
+<!-- Painel -->
+<div class="shell" id="shell" hidden>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="GDM Proposta">
+        <svg viewBox="0 0 655 677" aria-hidden="true"><path d="M234 216 L329 216 L96 677 L0 677 Z M476 0 L572 0 L338 461 L242 461 Z M559 101 L655 101 L422 563 L325 563 Z" fill="url(#gg)"/></svg>
+        <span><b>GDM Proposta</b><small>Estratégia Fiscal</small></span>
+      </a>
+      <nav class="top-actions">
+        <button class="tbtn" id="btnNova" type="button">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Nova proposta</span></button>
+        <button class="tbtn" id="btnLista" type="button" aria-controls="drawer">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Propostas</span><em id="count">0</em></button>
+        <div class="me">
+          <button class="avatar" id="meBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Conta">A</button>
+          <div class="me-menu glass" id="meMenu" hidden>
+            <p><b>Arminda</b><small>GDM Estratégia Fiscal</small></p>
+            <button type="button" id="btnSair">Sair deste aparelho</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="work">
+    <aside class="editor" aria-label="Dados da proposta">
+      <div class="hello">
+        <p class="eyebrow-ui">Painel de propostas</p>
+        <h2>Olá, Arminda</h2>
+        <p>Preencha os dados abaixo. A prévia muda na hora e a proposta sai em PDF ou como link.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="O que editar">
+        <button type="button" role="tab" id="tabDados" aria-selected="true" aria-controls="paneDados">Dados do cliente</button>
+        <button type="button" role="tab" id="tabTextos" aria-selected="false" aria-controls="paneTextos">Textos da proposta</button>
+      </div>
+      <div class="pane" id="paneDados" role="tabpanel" aria-labelledby="tabDados">
+      <p class="sample" id="sampleNote" hidden>Exemplo preenchido. Troque pelos dados do seu cliente.</p>
+
+      <section class="card glass">
+        <header><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><h3>Cliente</h3></header>
+        <div class="field">
+          <label for="f-cliente">Nome do cliente</label>
+          <input id="f-cliente" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Fazenda Santa Rita">
+        </div>
+        <div class="slug" id="slugPreview"><span>Link</span><code id="slugTxt"></code></div>
+      </section>
+
+      <section class="card glass">
+        <header><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v18M17 7.5c0-1.9-2.2-3.5-5-3.5s-5 1.6-5 3.5S9.2 11 12 11s5 1.6 5 3.5S14.8 18 12 18s-5-1.6-5-3.5"/></svg></span><h3>Investimento</h3></header>
+        <div class="field">
+          <label for="f-valor">Valor da proposta</label>
+          <div class="money"><span>R$</span><input id="f-valor" type="text" inputmode="numeric" autocomplete="off"></div>
+          <p class="extenso" id="valorExt"></p>
+        </div>
+        <div class="field">
+          <label for="f-condicao">Condição de pagamento</label>
+          <div class="presets" id="presets"></div>
+          <input id="f-condicao" type="text" maxlength="140">
+        </div>
+      </section>
+
+      <section class="card glass">
+        <header><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h14v12l-4 4H5z"/><path d="M15 20v-4h4M9 9h6M9 13h4"/></svg></span><h3>Observação</h3></header>
+        <div class="field">
+          <label for="f-obs" class="sr">Observação adicional</label>
+          <textarea id="f-obs" maxlength="600" rows="4" placeholder="Aparece em destaque na página de investimento. Deixe em branco para ocultar."></textarea>
+          <span class="count" id="obsCount"></span>
+        </div>
+      </section>
+
+      <details class="card glass more" id="more">
+        <summary><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><h3>Mais detalhes</h3><i aria-hidden="true"></i></summary>
+        <div class="more-in">
+          <div class="field"><label for="f-assunto">Assunto (aparece na capa)</label><input id="f-assunto" type="text" maxlength="180"></div>
+          <div class="field"><label for="f-contexto">Contexto do cliente</label><textarea id="f-contexto" maxlength="900" rows="5"></textarea><span class="count" id="ctxCount"></span></div>
+          <div class="field"><label for="f-exito">Honorários de êxito (opcional)</label><input id="f-exito" type="text" maxlength="140" placeholder="Ex.: 10% sobre os créditos efetivamente recuperados"></div>
+          <div class="row2">
+            <div class="field"><label for="f-data">Data</label><input id="f-data" type="date"></div>
+            <div class="field"><label for="f-validade">Validade (dias)</label><input id="f-validade" type="number" min="1" max="365"></div>
+          </div>
+          <div class="field"><label for="f-cidade">Cidade de emissão</label><input id="f-cidade" type="text" maxlength="60"></div>
+          <div class="field"><label for="f-resp">Quem assina pela GDM</label><input id="f-resp" type="text" maxlength="80"></div>
+          <p class="hint-ui">As etapas, os entregáveis e todos os outros textos ficam na aba <button type="button" class="linkish" data-goto="escopo">Textos da proposta</button>.</p>
+        </div>
+      </details>
+
+      </div>
+      <div class="pane" id="paneTextos" role="tabpanel" aria-labelledby="tabTextos" hidden>
+        <div class="tx-help glass">
+          <p><b>Tudo o que aparece na proposta</b>, página por página. Clique numa página da prévia para abrir os textos dela.</p>
+          <div class="tx-tokens"><span>Inserir:</span>
+            <button type="button" data-token="{cliente}">{cliente}</button><button type="button" data-token="{valor}">{valor}</button>
+            <button type="button" data-token="{validade}">{validade}</button><button type="button" data-token="{data}">{data}</button>
+            <button type="button" data-token="*destaque*">*destaque*</button></div>
+          <p class="tx-note">{cliente} vira o nome do cliente. Texto entre *asteriscos* fica em negrito.</p>
+          <div class="tx-actions">
+            <button type="button" class="btn btn-glass btn-sm" id="btnPadrao">Salvar como padrão</button>
+            <button type="button" class="btn btn-glass btn-sm" id="btnRestaurarTudo">Restaurar padrão</button>
+          </div>
+          <p class="tx-note" id="padraoInfo"></p>
+        </div>
+        <div id="txSecs"></div>
+      </div>
+
+      <div class="dock">
+        <button class="btn btn-gold" id="btnPdf" type="button">
+          <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg><span>Baixar PDF</span></button>
+        <button class="btn btn-glass" id="btnLink" type="button">
+          <svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1M14 10a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg><span id="btnLinkTxt">Gerar link</span></button>
+      </div>
+    </aside>
+
+    <main class="preview" id="preview">
+      <div class="pv-bar">
+        <span class="live"><i></i>Prévia ao vivo</span>
+        <span class="pager" id="pager">Página 1 de 8</span>
+      </div>
+      <div class="pages" id="pages"></div>
+    </main>
+  </div>
+</div>
+
+<!-- Lista de propostas -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer glass" id="drawer" aria-label="Propostas salvas" hidden>
+  <header><h2>Propostas salvas</h2><button class="x" id="drawerClose" type="button" aria-label="Fechar">×</button></header>
+  <div class="field"><label for="busca" class="sr">Buscar</label><input id="busca" type="search" placeholder="Buscar por cliente"></div>
+  <div class="list" id="list"></div>
+</aside>
+
+<!-- Modal do link -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-card glass" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modalCard"></div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="/assets/js/template.js" defer></script>
+<script src="/assets/js/app.js" defer></script>
+</body>
+</html>

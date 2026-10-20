@@ -1,0 +1,16 @@
+{
+  "name": "gdm-proposta",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gerador de propostas comerciais da GDM Estratégia Fiscal",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.8.0"
+  }
+}
