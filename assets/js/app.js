@@ -158,23 +158,23 @@
       f: [EY, TI, ["p1", "Parágrafo 1", "area"], ["p2", "Parágrafo 2", "area"], ["propositoTitulo", "Título do quadro verde"], ["proposito", "Texto do quadro verde", "area"],
           ["pilaresTitulo", "Título da lista de atuação"], ["pilares", "Itens de atuação", "pairs", ["Título", "Descrição"]], ["contatoTitulo", "Título do quadro final"], ["contato", "Texto do quadro final", "area"]] },
     { id: "contexto", nome: "Contexto e objetivo", note: "O contexto de cada cliente fica na aba Dados do cliente.",
-      f: [EY, TI, ["objetivoTitulo", "Título do quadro verde"], ["objetivo", "Objetivo do trabalho", "area"], ["recebeTitulo", "Título da lista"], ["recebe", "O que o cliente recebe", "list"]] },
-    { id: "escopo", nome: "Escopo e entregáveis",
-      f: [EY, TI, ["intro", "Introdução", "area"], ["entregavelRotulo", "Rótulo antes do entregável"], ["etapas", "Etapas do trabalho", "etapas"]] },
+      f: [EY, TI, ["objetivoTitulo", "Título do quadro verde"], ["objetivo", "Objetivo do trabalho", "area"], ["recebeTitulo", "Título da lista"], ["recebe", "Benefícios para o cliente", "list"]] },
+    { id: "escopo", nome: "Escopo: consultoria contínua",
+      f: [EY, TI, ["intro", "Introdução", "area"], ["entregavelRotulo", "Rótulo antes do entregável"], ["etapas", "Frentes do escopo", "etapas"]] },
     { id: "invest", nome: "Investimento", note: "Valor, condição de pagamento, êxito e observação ficam na aba Dados do cliente.",
       f: [EY, TI, ["intro", "Introdução", "area"], ["colComponente", "Coluna 1 da tabela"], ["colValor", "Coluna 2 da tabela"], ["linhaTitulo", "Nome do item de honorários"],
           ["linhaSub", "Descrição do item (em branco, lista as etapas)"], ["exitoTitulo", "Nome do item de êxito"], ["exitoNota", "Descrição do item de êxito"],
           ["totalRotulo", "Rótulo do total"], ["obsTitulo", "Título da observação"], ["outrosTitulo", "Título de outros serviços"], ["outros", "Texto de outros serviços", "area"]] },
-    { id: "inicio", nome: "Início do trabalho",
-      f: [EY, TI, ["passos", "Passos", "pairs", ["Passo", "Descrição"]], ["docsTitulo", "Título dos documentos"], ["docs", "Documentos para início", "list"],
-          ["naoInclTitulo", "Título dos itens não incluídos"], ["naoIncl", "Itens não incluídos", "list"], ["premissasTitulo", "Título das premissas"], ["premissas", "Premissas", "list"]] },
+    { id: "inicio", nome: "Escopo: operações, atendimento e limites",
+      f: [EY, TI, ["passos", "Frentes do escopo", "pairs", ["Frente", "Descrição"]], ["docsTitulo", "Título das formas de atendimento"], ["docs", "Formas de atendimento", "list"],
+          ["naoInclTitulo", "Título da limitação do escopo"], ["naoIncl", "O que não está incluído", "list"], ["premissasTitulo", "Título das premissas"], ["premissas", "Premissas", "list"]] },
     { id: "cond", nome: "Condições gerais",
       f: [EY, TI, ["clausulas", "Cláusulas", "pairs", ["Título da cláusula", "Texto da cláusula"]], ["fechamento", "Frase de fechamento", "area"],
           ["assinaGdm", "Assinatura da GDM"], ["assinaCliente", "Assinatura do cliente"], ["assinaClienteSub", "Linha abaixo da assinatura do cliente"]] },
     { id: "contra", nome: "Contracapa e contatos",
       f: [["tag", "Frase abaixo do logo"], ["whatsapp", "WhatsApp"], ["site", "Site"], ["instagram", "Instagram"], ["endereco", "Endereço", "area"]] }
   ];
-  const ITEM_LABEL = { pilares: "Item", recebe: "Item", etapas: "Etapa", passos: "Passo", docs: "Documento", naoIncl: "Item", premissas: "Premissa", clausulas: "Cláusula" };
+  const ITEM_LABEL = { pilares: "Item", recebe: "Item", etapas: "Frente", passos: "Frente", docs: "Canal", naoIncl: "Item", premissas: "Premissa", clausulas: "Cláusula" };
   const NEW_ITEM = { pairs: () => ({ t: "", d: "" }), list: () => "", etapas: () => ({ on: true, t: "", d: "", e: "" }) };
 
   const ta = (path, val, rows, ph) => `<textarea data-path="${path}" rows="${rows || 2}"${ph ? ` placeholder="${esc(ph)}"` : ""}>${esc(val)}</textarea>`;
@@ -187,7 +187,7 @@
       if (type === "list") body = ta(p, it, 2);
       if (type === "pairs") body = inp(p + ".t", it.t, labels[0]) + ta(p + ".d", it.d, 2, labels[1]);
       if (type === "etapas") body = `<label class="inc"><input type="checkbox" data-path="${p}.on" ${it.on !== false ? "checked" : ""}> Incluir nesta proposta</label>`
-        + inp(p + ".t", it.t, "Nome da etapa") + ta(p + ".d", it.d, 3, "Descrição") + `<span class="sublbl">Entregável</span>` + ta(p + ".e", it.e, 2, "O que o cliente recebe nesta etapa");
+        + inp(p + ".t", it.t, "Nome da frente") + ta(p + ".d", it.d, 3, "Descrição") + `<span class="sublbl">Inclui (opcional)</span>` + ta(p + ".e", it.e, 2, "Opcional: o que está incluído");
       return `<div class="li${type === "etapas" && it.on === false ? " off" : ""}"><div class="li-head"><span>${ITEM_LABEL[k] || "Item"} ${i + 1}</span><div class="li-btns">
         <button type="button" data-act="up" data-list="${base}" data-i="${i}" aria-label="Subir" ${i === 0 ? "disabled" : ""}>↑</button>
         <button type="button" data-act="down" data-list="${base}" data-i="${i}" aria-label="Descer" ${i === arr.length - 1 ? "disabled" : ""}>↓</button>

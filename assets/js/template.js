@@ -84,7 +84,7 @@
   /* ---------- textos padrão (tudo isso é editável na aba Textos) ---------- */
   const TEXTOS = {
     capa: {
-      linha1: "Proposta de *Estratégia Fiscal*", linha2: "para o agronegócio",
+      linha1: "Consultoria *Fiscal e Tributária*", linha2: "para grãos e cereais",
       rotuloDest: "Destinatário", rotuloData: "Data", rotuloValidade: "Validade"
     },
     quem: {
@@ -95,83 +95,86 @@
       proposito: "Transformar desafios fiscais em oportunidades de crescimento no mercado, reduzindo seus custos com transparência e simplicidade burocrática. Nosso dever é gerar ações transformadoras do campo ao mercado, contornando obstáculos em busca de impactos positivos.",
       pilaresTitulo: "Como a nossa consultoria atua",
       pilares: [
-        { t: "Identificar inconsistências ou erros", d: "Revisão de apurações e escriturações antes que virem autuação." },
-        { t: "Prevenir passivos fiscais", d: "Compliance fiscal como base de toda decisão da operação." },
-        { t: "Esclarecer incentivos fiscais", d: "Quais benefícios podem ser aproveitados e o que cada um exige." },
-        { t: "Reavaliar o regime tributário", d: "Revisão periódica do enquadramento conforme a operação cresce." },
-        { t: "Orientar sobre documentos", d: "Orientação transparente sobre preenchimento e entrega de obrigações." },
+        { t: "Validar operações antes do negócio", d: "Análise tributária prévia de oportunidades e estruturas comerciais." },
+        { t: "Prevenir passivos fiscais", d: "Suporte preventivo para que a rotina não vire contingência futura." },
+        { t: "Esclarecer incentivos fiscais", d: "Diferimentos, suspensões e regimes especiais, e o que cada um exige." },
+        { t: "Proteger os créditos", d: "Legitimidade e documentação dos créditos de ICMS, PIS e COFINS." },
+        { t: "Preparar para a Reforma Tributária", d: "Impactos da CBS e do IBS e adequações para a transição." },
+        { t: "Responder a demandas fiscais", d: "Orientação sobre notificações, cobranças e malha fiscal." },
         { t: "Acompanhar a legislação", d: "O produtor e a empresa do agro atentos às mudanças que importam." },
-        { t: "Identificar créditos tributários", d: "Créditos que podem ser compensados e reduzir o custo fiscal." },
         { t: "Conectar agro e tributarista", d: "Ponte entre a rotina do campo e a técnica tributária." }
       ],
       contatoTitulo: "Um único ponto de contato",
       contato: "Quando a demanda exige atuação privativa de advogado, a GDM conduz o projeto ao lado de escritórios de advocacia parceiros, especializados em direito tributário. Você conversa com um só time do início ao fim."
     },
     contexto: {
-      eyebrow: "Contexto", titulo: "Contexto e *objetivo*",
+      eyebrow: "Objetivo", titulo: "Contexto e *objetivo*",
       objetivoTitulo: "Objetivo do trabalho",
-      objetivo: "Entregar à {cliente} uma visão clara da sua carga tributária, dos incentivos e créditos que pode aproveitar e dos riscos de cada alternativa, para que as decisões da operação sejam tomadas com segurança e com o menor custo fiscal possível.\nHavendo decisão de seguir com algum caminho, a GDM conduz a implementação até a conclusão, com acompanhamento próximo de cada etapa.",
-      recebeTitulo: "O que a {cliente} recebe",
+      objetivo: "Prestar suporte técnico-fiscal e tributário contínuo à equipe da {cliente}, com segurança nas operações comerciais, mitigação de riscos fiscais e tributários e suporte estratégico às decisões que envolvem a comercialização de grãos, cereais e demais produtos do agronegócio.\nA atuação é integrada e abrange toda a cadeia operacional da empresa, da negociação e aquisição dos produtos ao faturamento, transporte, armazenagem, exportação e escrituração fiscal.",
+      recebeTitulo: "Benefícios para a {cliente}",
       recebe: [
-        "Um retrato fiel da situação fiscal atual, com os riscos em ordem de prioridade.",
-        "As oportunidades de redução de custo, com o que cada uma exige para ser obtida e mantida.",
-        "Um plano de ação aprovado em conjunto, sem surpresas sobre prazos e custos.",
-        "Acompanhamento para que os ganhos se mantenham ao longo do tempo."
+        "Mais segurança fiscal nas operações de compra, venda, armazenagem, industrialização e exportação.",
+        "Menor exposição a autuações, glosas de crédito e contingências fiscais.",
+        "Validação prévia das operações de maior complexidade tributária.",
+        "Apoio permanente às equipes fiscal, contábil, comercial, logística e administrativa.",
+        "Atualização constante sobre mudanças legislativas, normativas e jurisprudenciais do agronegócio.",
+        "Orientação sobre os impactos e as adaptações exigidas pela Reforma Tributária.",
+        "Especialistas na tributação de grãos, sem ampliar a estrutura interna.",
+        "Análises fiscal e jurídica integradas, com mais previsibilidade nas decisões."
       ]
     },
     escopo: {
-      eyebrow: "Escopo", titulo: "Escopo dos *serviços*",
-      intro: "O trabalho está organizado em etapas com entregáveis próprios. A passagem de uma etapa para a seguinte e a adesão a qualquer regime ou benefício dependem de decisão da {cliente}.",
-      entregavelRotulo: "Entregável:",
+      eyebrow: "Escopo", titulo: "Consultoria tributária *contínua*",
+      intro: "Atendimento permanente às demandas operacionais da {cliente} ligadas às rotinas fiscais e tributárias, por meio de consultas, reuniões técnicas e pareceres, conforme a complexidade da matéria.",
+      entregavelRotulo: "Inclui:",
       etapas: [
-        { on: true, t: "Diagnóstico fiscal", d: "Levantamento do enquadramento tributário, das apurações e das obrigações acessórias da {cliente}, para identificar inconsistências, erros e pontos de risco que possam gerar passivo fiscal.", e: "relatório de diagnóstico com os pontos de atenção em ordem de prioridade." },
-        { on: true, t: "Mapa de oportunidades", d: "Estudo dos incentivos fiscais, regimes especiais e créditos tributários aplicáveis à operação da {cliente}, com as condições de acesso e de manutenção de cada um e o risco envolvido em cada caminho.", e: "matriz de oportunidades com requisitos, ganho estimado e riscos de cada alternativa." },
-        { on: true, t: "Plano de ação e implementação", d: "Definição, junto à {cliente}, dos caminhos que serão seguidos e condução dos pedidos de adesão, das compensações de créditos e dos ajustes de rotina. Quando houver necessidade de atuação jurídica, o trabalho é conduzido com escritório de advocacia parceiro, com a GDM como ponto único de contato.", e: "plano de ação aprovado e pedidos protocolados." },
-        { on: true, t: "Acompanhamento contínuo", d: "Monitoramento das mudanças legislativas que afetam a operação, reavaliação periódica do regime tributário e orientação sobre o preenchimento e a entrega de documentos fiscais.", e: "reuniões periódicas de acompanhamento e alertas sobre mudanças relevantes." }
+        { on: true, t: "Tributação das operações e apoio comercial", d: "Suporte rápido para oportunidades comerciais, inclusive emergenciais, operações interestaduais e expansão de mercados. Avaliação prévia dos impactos tributários de estruturas negociais e de operações não recorrentes, distribuição contratual dos riscos e responsabilidades tributárias e apoio na redação de cláusulas sobre tributos, em prazo compatível com a dinâmica das negociações.", e: "" },
+        { on: true, t: "ICMS", d: "Diferimentos, suspensões, benefícios e créditos fiscais, obrigações acessórias e procedimentos operacionais relacionados ao imposto.", e: "" },
+        { on: true, t: "PIS e COFINS", d: "Tratamento tributário nas operações de compra, de venda e destinadas à exportação, além dos créditos e regimes específicos aplicáveis ao setor.", e: "" },
+        { on: true, t: "Reforma Tributária", d: "Impactos da CBS e do IBS, reflexos na apuração dos tributos, adequações operacionais e fiscais para a transição e avaliação das oportunidades e riscos da implementação.", e: "" },
+        { on: true, t: "Procedimentos internos", d: "Avaliação dos procedimentos fiscais adotados, identificação de riscos e oportunidades tributárias, recomendações de adequação de controles e processos e fortalecimento da governança tributária.", e: "" }
       ]
     },
     invest: {
-      eyebrow: "Investimento", titulo: "*Investimento*",
-      intro: "Os honorários abaixo cobrem as etapas descritas no escopo desta proposta. Sobre os valores incidirão os tributos legalmente exigíveis.",
+      eyebrow: "Honorários", titulo: "*Investimento*",
+      intro: "Pela execução dos serviços descritos nesta proposta, a {cliente} pagará honorários mensais, líquidos dos tributos incidentes sobre o faturamento.",
       colComponente: "Componente", colValor: "Valor e condição",
-      linhaTitulo: "Honorários de consultoria", linhaSub: "",
+      linhaTitulo: "Consultoria fiscal e tributária contínua", linhaSub: "suporte consultivo descrito no escopo desta proposta",
       exitoTitulo: "Honorários de êxito", exitoNota: "devidos somente sobre o benefício econômico efetivamente obtido",
-      totalRotulo: "Investimento total", obsTitulo: "Observação",
+      totalRotulo: "Investimento mensal", obsTitulo: "Prazo de contratação",
       outrosTitulo: "Outros serviços, sob proposta específica",
-      outros: "Demandas que surgirem durante o trabalho e não estejam no escopo, como medidas judiciais ou a análise de operações em outros Estados, podem ser orçadas separadamente, se houver interesse."
+      outros: "Levantamentos fiscais retrospectivos, recuperação de créditos, processos administrativos ou judiciais e demais demandas fora do escopo podem ser orçados separadamente, se houver interesse."
     },
     inicio: {
-      eyebrow: "Início", titulo: "Início do *trabalho*",
+      eyebrow: "Escopo", titulo: "Suporte em *operações e projetos*",
       passos: [
-        { t: "Reunião de abertura", d: "Com as áreas fiscal, contábil e financeira da {cliente}, para confirmar o modelo e o volume das operações." },
-        { t: "Envio de documentos", d: "A {cliente} disponibiliza as informações listadas abaixo, para que o trabalho comece com base completa." },
-        { t: "Primeiras entregas", d: "As datas são fixadas na reunião de abertura, a partir do recebimento dos documentos." }
+        { t: "Estruturação e validação de operações", d: "Venda com fim específico de exportação, operações por conta e ordem e triangulares, armazenagem em terceiros, transferências entre estabelecimentos e compras interestaduais de produtores." },
+        { t: "Benefícios fiscais e créditos", d: "Diferimentos, suspensões, regimes especiais e benefícios estaduais e federais. Legitimidade dos créditos, riscos de glosa de ICMS, PIS e COFINS e créditos presumidos." },
+        { t: "Aquisições de produtores rurais", d: "Riscos da cadeia de fornecimento, responsabilidade do adquirente e prevenção de passivos por irregularidades dos fornecedores." },
+        { t: "Projetos e decisões estruturais", d: "Filiais, frota própria, armazenagem e secagem, reestruturação logística e novos modelos operacionais." },
+        { t: "Demandas fiscais e atualização", d: "Notificações, cobranças, avisos de divergência e malha fiscal, com apoio em respostas preliminares. Monitoramento legislativo e informativos sobre mudanças relevantes." }
       ],
-      docsTitulo: "Documentos para início",
-      docs: ["Contrato social e inscrições estaduais", "Apurações fiscais dos últimos 60 meses", "SPED Fiscal e EFD Contribuições", "XML das notas de entrada e saída", "Contratos de compra e venda e CPRs, se houver", "Contato do contador responsável"],
-      naoInclTitulo: "Itens não incluídos",
+      docsTitulo: "Forma de atendimento",
+      docs: ["E-mail", "Telefone", "WhatsApp corporativo", "Reuniões virtuais agendadas", "Pareceres e memorandos técnicos"],
+      naoInclTitulo: "Limitação do escopo",
       naoIncl: [
-        "Medidas judiciais, contencioso administrativo, impugnações e recursos.",
-        "Regularização cadastral e obrigações acessórias em atraso, com as multas decorrentes.",
-        "Licenças e alvarás municipais, sanitários, ambientais e de funcionamento.",
-        "Análise de operações e Estados não citados nesta proposta.",
-        "Laudos, perícias, garantias, custas e taxas exigidas pelos órgãos públicos."
+        "Auditoria fiscal ou contábil, certificação de conformidade e revisão de escriturações e declarações.",
+        "Levantamentos retrospectivos e recuperação de créditos, salvo contratação específica.",
+        "Processos administrativos ou judiciais, recursos, sustentação oral e representação perante órgãos públicos."
       ],
       premissasTitulo: "Premissas",
       premissas: [
-        "O trabalho parte das informações e documentos fornecidos pela {cliente}, que responde por sua veracidade e completude.",
-        "A concessão de regime especial pode exigir garantia, providenciada e custeada pela {cliente}.",
-        "Reuniões ocorrem preferencialmente por meios remotos, e presencialmente mediante agendamento."
+        "O trabalho parte das informações e documentos fornecidos pela {cliente}, que responde por sua veracidade e completude."
       ]
     },
     cond: {
       eyebrow: "Condições", titulo: "Condições gerais *da proposta*",
       clausulas: [
         { t: "Formalização.", d: "Aceita esta proposta, as partes formalizarão o Contrato de Prestação de Serviços de Consultoria, do qual ela fará parte como anexo. Até a assinatura do contrato, o aceite desta proposta vincula as partes nos termos aqui previstos." },
-        { t: "Vencimento e faturamento.", d: "Os honorários vencem conforme a condição indicada no item Investimento. Com o aceite, a contratante fornecerá os dados para cadastro, e as notas fiscais serão enviadas ao e-mail informado com antecedência mínima de 5 (cinco) dias úteis do vencimento." },
+        { t: "Prazo.", d: "O contrato terá prazo mínimo de vigência de 12 (doze) meses, contados da data de sua assinatura." },
+        { t: "Vencimento e faturamento.", d: "Os honorários são mensais e vencem conforme a condição indicada no item Investimento. As notas fiscais serão enviadas ao e-mail informado com antecedência mínima de 5 (cinco) dias úteis do vencimento." },
         { t: "Inadimplemento.", d: "O atraso no pagamento sujeita o valor devido a multa de 2% (dois por cento) e correção monetária até o efetivo pagamento, e autoriza a suspensão dos serviços até a regularização." },
-        { t: "Tributos.", d: "Sobre os honorários incidirão os tributos legalmente exigíveis, inclusive os sujeitos à retenção na fonte." },
-        { t: "Honorários de êxito.", d: "Quando previstos, são devidos sempre que o benefício econômico decorrer do trabalho iniciado pela GDM, ainda que obtido após o encerramento da contratação." },
+        { t: "Tributos.", d: "Os honorários são líquidos. Os tributos incidentes sobre o faturamento, inclusive os sujeitos à retenção na fonte, serão acrescidos ao valor faturado." },
         { t: "Despesas.", d: "Custas, taxas, deslocamentos e serviços de terceiros, quando necessários, correm por conta da contratante e dependem de sua aprovação prévia." },
         { t: "Atuação jurídica.", d: "Demandas que exijam atuação privativa de advogado serão conduzidas por escritório parceiro, mediante contratação própria, com acompanhamento da GDM." },
         { t: "Natureza da obrigação.", d: "Os serviços de consultoria constituem obrigação de meio, e não de resultado. Ressalvadas as hipóteses de dolo, a responsabilidade da GDM limita-se aos honorários efetivamente recebidos." },
@@ -180,23 +183,23 @@
         { t: "Assinatura eletrônica.", d: "As partes reconhecem a validade da assinatura eletrônica desta proposta e do contrato." },
         { t: "Validade e aceite.", d: "Esta proposta é válida por {validade} ({validade_extenso}) dias a partir de {data}. Estando de acordo, basta assinar no campo abaixo ou confirmar o aceite por escrito." }
       ],
-      fechamento: "Permanecemos à disposição para quaisquer esclarecimentos.",
+      fechamento: "Permanecemos à disposição para quaisquer esclarecimentos e esperamos contribuir para o fortalecimento da governança tributária e da segurança fiscal das operações da {cliente}.",
       assinaGdm: "GDM Estratégia Fiscal", assinaCliente: "De acordo · {cliente}", assinaClienteSub: "Nome, cargo e data"
     },
     contra: {
-      tag: "Estratégia fiscal para o agro crescer",
+      tag: "Estratégia tributária com visão de negócio",
       whatsapp: "(65) 99696-3745", site: "gdmestrategiafiscal.com.br", instagram: "@gdm_estrategia_fiscal",
       endereco: "Rua Teodorico Pereira, 131, Bairro Novo Horizonte, Nortelândia/MT, CEP 78430-000"
     }
   };
 
   const DEFAULTS = {
-    cliente: "3tentos",
-    valor: 1850000,
-    condicao: "50% no aceite e 50% na entrega do diagnóstico",
-    obs: "Os valores consideram a operação atual da empresa no Estado. Caso o volume ou o número de estabelecimentos mude durante o trabalho, o escopo e os honorários serão revistos em comum acordo.",
-    assunto: "Diagnóstico tributário, mapeamento de incentivos fiscais e plano de redução do custo fiscal da operação.",
-    contexto: "A {cliente} atua no agronegócio e busca reduzir sua carga tributária com segurança, aproveitando os incentivos, regimes especiais e créditos aplicáveis à sua operação, sem abrir mão da conformidade fiscal.\nAntes de decidir qualquer adesão, a empresa quer conhecer as alternativas disponíveis, o que cada uma exige para ser obtida e mantida, e o custo tributário de cada caminho.",
+    cliente: "Futuro Cereais",
+    valor: 1500000,
+    condicao: "por mês, líquido de tributos",
+    obs: "O contrato terá prazo mínimo de vigência de 12 (doze) meses, contados da data de sua assinatura. O valor contempla o suporte consultivo fiscal e tributário contínuo descrito no escopo desta proposta.",
+    assunto: "Suporte fiscal e tributário contínuo para a comercialização de grãos, cereais e demais produtos do agronegócio.",
+    contexto: "No mercado de grãos e commodities agrícolas, a {cliente} frequentemente se depara com oportunidades comerciais que exigem rápida avaliação tributária e fiscal, especialmente em operações interestaduais, novas rotas de comercialização e negociações que pedem resposta imediata.\nNesses cenários, um suporte consultivo especializado e ágil é fundamental para subsidiar as decisões da equipe comercial, avaliar corretamente os impactos tributários das operações, mitigar riscos fiscais e preservar a competitividade e a rentabilidade dos negócios.",
     exito: "", data: todayISO(), validade: 30, cidade: "Nortelândia/MT", resp: "Arminda Frota"
   };
 
