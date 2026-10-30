@@ -4,7 +4,7 @@ Gerador de propostas comerciais da **GDM Estratégia Fiscal e Comércio de Grão
 
 A Arminda entra no painel, preenche cliente, valor e observação, vê a proposta montada na hora e escolhe entre:
 
-* **Baixar PDF**: 8 páginas A4 com a identidade da GDM.
+* **Baixar PDF**: folhas A4 com a identidade da GDM. O texto passa para a folha seguinte quando não cabe.
 * **Gerar link**: um endereço público com o nome do cliente, por exemplo `seudominio.com.br/3tentos`, com botão para baixar o PDF e falar com a GDM no WhatsApp.
 
 ## Estrutura
@@ -55,7 +55,8 @@ Abra `http://localhost:3000`. Sem o token do Blob, as propostas ficam salvas na 
 * Quem abre o link do cliente vê a vinheta "Proposta personalizada para {nome do cliente}" antes da proposta.
 * O painel tem duas abas:
   * **Dados do cliente**: nome, valor, condição de pagamento, observação, assunto, contexto, êxito, data, validade, cidade e quem assina.
-  * **Textos da proposta**: todos os textos das 8 páginas, separados por página. Etapas, entregáveis, pilares, documentos, itens não incluídos, premissas e cláusulas podem ser editados, incluídos, removidos e reordenados. Cada etapa tem a opção "Incluir nesta proposta".
+  * **Textos da proposta**: todos os textos, separados por seção (Objetivo, Escopo, Forma de atendimento, Prazo, Honorários, Benefícios, Considerações finais, além de Quem somos e Condições gerais). Parágrafos, grupos e itens de lista podem ser editados, incluídos, removidos e reordenados.
+* Cada campo, item e seção tem o botão **Na proposta / Oculto**, que tira o item da proposta sem apagar o texto. Se o nome do cliente for ocultado, os textos passam a dizer "CONTRATANTE" e o nome some da capa, do rodapé e do PDF. Se o valor for ocultado, somem o quadro do valor e as frases que citam o valor.
 * Nos textos, `{cliente}` vira o nome do cliente (também funcionam `{valor}`, `{validade}` e `{data}`) e `*trecho*` fica em negrito.
 * Clicar numa página da prévia abre os textos dela. Se um texto passar do tamanho da folha, a página fica marcada e aparece o aviso "Passou da página".
 * **Salvar como padrão** guarda os textos atuais para toda proposta nova. **Restaurar padrão** volta os textos da proposta aberta ao padrão. O texto original da GDM pode ser recuperado a qualquer momento.

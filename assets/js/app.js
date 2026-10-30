@@ -84,17 +84,38 @@
   let loadedSlug = null;
   try { const d = JSON.parse(store.get(DRAFT) || "null"); if (d && typeof d === "object") { state = Object.assign({}, G.DEFAULTS, d.state); loadedSlug = d.loadedSlug || null; } } catch (e) {}
   state.textos = G.textosDe(state); delete state.etapas;
+  state.ocultar = Object.assign({}, state.ocultar);
 
   /* ---------- aba Dados ---------- */
   const F = { cliente: "f-cliente", condicao: "f-condicao", obs: "f-obs", assunto: "f-assunto", contexto: "f-contexto", exito: "f-exito", data: "f-data", validade: "f-validade", cidade: "f-cidade", resp: "f-resp" };
   const PRESETS = ["à vista, no aceite da proposta", "50% no aceite e 50% na entrega do diagnóstico", "em 3 parcelas mensais, a primeira no aceite", "mensal, durante a vigência do contrato"];
   const PRESET_LABEL = ["À vista", "50% + 50%", "3 parcelas", "Mensal"];
 
+  const CAMPO_ID = { cliente: "f-cliente", valor: "f-valor", condicao: "f-condicao", obs: "f-obs", assunto: "f-assunto", contexto: "f-contexto",
+    exito: "f-exito", data: "f-data", validade: "f-validade", cidade: "f-cidade", resp: "f-resp" };
+  const CAMPO_NOME = { cliente: "o nome do cliente (o texto passa a dizer CONTRATANTE)", valor: "o valor", condicao: "a condição de pagamento", obs: "a observação",
+    assunto: "o assunto", contexto: "o contexto", exito: "os honorários de êxito", data: "a data", validade: "a validade", cidade: "a cidade", resp: "quem assina" };
+  function drawCampoVis() {
+    for (const k in CAMPO_ID) {
+      const fld = $(CAMPO_ID[k]).closest(".field"), off = !!state.ocultar[k];
+      let box = fld.querySelector(":scope > .cvis");
+      if (!box) { box = document.createElement("div"); box.className = "cvis"; fld.classList.add("has-vis"); fld.insertBefore(box, fld.firstChild); }
+      box.innerHTML = visBtn(`data-campo="${k}"`, off, CAMPO_NOME[k]);
+      fld.classList.toggle("off", off);
+    }
+  }
+  $("paneDados").addEventListener("click", e => {
+    const b = e.target.closest("button[data-campo]"); if (!b) return;
+    const k = b.dataset.campo; state.ocultar[k] = !state.ocultar[k]; if (!state.ocultar[k]) delete state.ocultar[k];
+    drawCampoVis(); changed();
+  });
+
   function fillForm() {
     for (const k in F) $(F[k]).value = state[k] == null ? "" : state[k];
     $("f-valor").value = G.BRL.format((state.valor || 0) / 100);
     $("presets").innerHTML = PRESETS.map((p, i) => `<button type="button" data-p="${i}" aria-pressed="${state.condicao === p}">${PRESET_LABEL[i]}</button>`).join("");
     drawTextos();
+    drawCampoVis();
     hints();
   }
   function slugFor() {
@@ -150,102 +171,137 @@
   document.addEventListener("click", e => { const g = e.target.closest("[data-goto]"); if (g) openSection(g.dataset.goto); });
 
   /* ---------- aba Textos ---------- */
-  const EY = ["eyebrow", "Rótulo acima do título"], TI = ["titulo", "Título da página"];
+  const EY = ["eyebrow", "Rótulo acima do título"], TI = ["titulo", "Título"];
   const SCHEMA = [
-    { id: "capa", nome: "Capa", note: "Assunto, data e validade ficam na aba Dados do cliente.",
+    { id: "capa", nome: "Capa", fixa: true, note: "Assunto, data e validade ficam na aba Dados do cliente.",
       f: [["linha1", "Título, linha 1"], ["linha2", "Título, linha 2"], ["rotuloDest", "Rótulo do destinatário"], ["rotuloData", "Rótulo da data"], ["rotuloValidade", "Rótulo da validade"]] },
     { id: "quem", nome: "Quem somos",
       f: [EY, TI, ["p1", "Parágrafo 1", "area"], ["p2", "Parágrafo 2", "area"], ["propositoTitulo", "Título do quadro verde"], ["proposito", "Texto do quadro verde", "area"],
           ["pilaresTitulo", "Título da lista de atuação"], ["pilares", "Itens de atuação", "pairs", ["Título", "Descrição"]], ["contatoTitulo", "Título do quadro final"], ["contato", "Texto do quadro final", "area"]] },
-    { id: "contexto", nome: "Contexto e objetivo", note: "O contexto de cada cliente fica na aba Dados do cliente.",
-      f: [EY, TI, ["objetivoTitulo", "Título do quadro verde"], ["objetivo", "Objetivo do trabalho", "area"], ["recebeTitulo", "Título da lista"], ["recebe", "Benefícios para o cliente", "list"]] },
-    { id: "escopo", nome: "Escopo: consultoria contínua",
-      f: [EY, TI, ["intro", "Introdução", "area"], ["entregavelRotulo", "Rótulo antes do entregável"], ["etapas", "Frentes do escopo", "etapas"]] },
-    { id: "invest", nome: "Investimento", note: "Valor, condição de pagamento, êxito e observação ficam na aba Dados do cliente.",
-      f: [EY, TI, ["intro", "Introdução", "area"], ["colComponente", "Coluna 1 da tabela"], ["colValor", "Coluna 2 da tabela"], ["linhaTitulo", "Nome do item de honorários"],
-          ["linhaSub", "Descrição do item (em branco, lista as etapas)"], ["exitoTitulo", "Nome do item de êxito"], ["exitoNota", "Descrição do item de êxito"],
-          ["totalRotulo", "Rótulo do total"], ["obsTitulo", "Título da observação"], ["outrosTitulo", "Título de outros serviços"], ["outros", "Texto de outros serviços", "area"]] },
-    { id: "inicio", nome: "Escopo: operações, atendimento e limites",
-      f: [EY, TI, ["passos", "Frentes do escopo", "pairs", ["Frente", "Descrição"]], ["docsTitulo", "Título das formas de atendimento"], ["docs", "Formas de atendimento", "list"],
-          ["naoInclTitulo", "Título da limitação do escopo"], ["naoIncl", "O que não está incluído", "list"], ["premissasTitulo", "Título das premissas"], ["premissas", "Premissas", "list"]] },
-    { id: "cond", nome: "Condições gerais",
-      f: [EY, TI, ["clausulas", "Cláusulas", "pairs", ["Título da cláusula", "Texto da cláusula"]], ["fechamento", "Frase de fechamento", "area"],
-          ["assinaGdm", "Assinatura da GDM"], ["assinaCliente", "Assinatura do cliente"], ["assinaClienteSub", "Linha abaixo da assinatura do cliente"]] },
+    { id: "objetivo", nome: "1. Objetivo", note: "O contexto opcional de cada cliente fica na aba Dados do cliente.",
+      f: [EY, TI, ["paragrafos", "Parágrafos", "list"]] },
+    { id: "escopo", nome: "2. Escopo dos serviços",
+      f: [EY, TI, ["sub21", "Subtítulo 2.1"], ["intro21", "Introdução do 2.1", "area"], ["grupos21", "Grupos do 2.1", "groups"],
+          ["lim21Titulo", "Título da limitação (2.1)"], ["lim21Intro", "Frase da limitação (2.1)"], ["lim21", "Itens da limitação (2.1)", "list"],
+          ["sub22", "Subtítulo 2.2"], ["intro22", "Introdução do 2.2", "area"], ["contempla", "Frase antes dos grupos (2.2)"], ["grupos22", "Grupos do 2.2", "groups"],
+          ["lim22Titulo", "Título da limitação (2.2)"], ["lim22Intro", "Frase da limitação (2.2)"], ["lim22", "Itens da limitação (2.2)", "list"]] },
+    { id: "atendimento", nome: "3. Forma de atendimento", f: [EY, TI, ["intro", "Introdução", "area"], ["itens", "Formas de atendimento", "list"]] },
+    { id: "prazo", nome: "4. Prazo de contratação", f: [EY, TI, ["texto", "Texto", "area"]] },
+    { id: "honorarios", nome: "5. Honorários", note: "Valor, condição de pagamento, êxito e observação ficam na aba Dados do cliente.",
+      f: [EY, TI, ["intro", "Introdução", "area"], ["rotulo", "Rótulo dentro do quadro do valor"], ["liquido", "Frase abaixo do valor", "area"],
+          ["contempla", "O que o valor contempla", "area"], ["exitoTitulo", "Título do quadro de êxito"], ["obsTitulo", "Título do quadro de observação"]] },
+    { id: "beneficios", nome: "6. Benefícios", f: [EY, TI, ["intro", "Introdução", "area"], ["itens", "Benefícios", "list"]] },
+    { id: "final", nome: "7. Considerações finais",
+      f: [EY, TI, ["paragrafos", "Parágrafos", "list"], ["resumo", "Resumo (quadro)", "list"], ["saudacao", "Saudação"], ["encerramento", "Frase de encerramento", "area"],
+          ["dataLinha", "Linha da data"], ["assinaGdm", "Assinatura da GDM"], ["assinaTag", "Frase abaixo da assinatura"],
+          ["assinaCliente", "Assinatura do cliente"], ["assinaClienteSub", "Linha abaixo da assinatura do cliente"]] },
+    { id: "cond", nome: "Condições gerais", f: [EY, TI, ["clausulas", "Cláusulas", "pairs", ["Título da cláusula", "Texto da cláusula"]]] },
     { id: "contra", nome: "Contracapa e contatos",
       f: [["tag", "Frase abaixo do logo"], ["whatsapp", "WhatsApp"], ["site", "Site"], ["instagram", "Instagram"], ["endereco", "Endereço", "area"]] }
   ];
-  const ITEM_LABEL = { pilares: "Item", recebe: "Item", etapas: "Frente", passos: "Frente", docs: "Canal", naoIncl: "Item", premissas: "Premissa", clausulas: "Cláusula" };
-  const NEW_ITEM = { pairs: () => ({ t: "", d: "" }), list: () => "", etapas: () => ({ on: true, t: "", d: "", e: "" }) };
+  const ITEM_LABEL = { pilares: "Item", paragrafos: "Parágrafo", resumo: "Linha", itens: "Item", lim21: "Item", lim22: "Item", grupos21: "Grupo", grupos22: "Grupo", clausulas: "Cláusula" };
+  const NEW_ITEM = { pairs: () => ({ t: "", d: "" }), list: () => "", groups: () => ({ t: "", itens: [""] }) };
+
+  // Itens fora da proposta: state.textos[sec].off guarda os caminhos ("_secao", "paragrafos.1", "grupos21.0.itens.3").
+  const offList = sec => (state.textos[sec].off = Array.isArray(state.textos[sec].off) ? state.textos[sec].off : []);
+  const isOff = (sec, path) => offList(sec).includes(path);
+  const EYE = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  const EYE_OFF = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0112 5c6.4 0 10 7 10 7a17 17 0 01-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7c1.8 0 3.4-.5 4.7-1.3M9.9 9.9a3 3 0 004.2 4.2"/></svg>`;
+  const visBtn = (attr, off, what) => `<button type="button" class="vis" ${attr} aria-pressed="${!off}" title="${off ? "Fora da proposta. Clique para mostrar " : "Na proposta. Clique para tirar "}${esc(what)}">${off ? EYE_OFF + "Oculto" : EYE + "Na proposta"}</button>`;
+  const txVis = (sec, path, what) => visBtn(`data-vis="${sec}|${path}"`, isOff(sec, path), what || "este item");
 
   const ta = (path, val, rows, ph) => `<textarea data-path="${path}" rows="${rows || 2}"${ph ? ` placeholder="${esc(ph)}"` : ""}>${esc(val)}</textarea>`;
   const inp = (path, val, ph) => `<input type="text" data-path="${path}" value="${esc(val)}"${ph ? ` placeholder="${esc(ph)}"` : ""}>`;
-  function listHTML(sec, k, type, labels) {
-    const arr = state.textos[sec][k] || [], base = `${sec}.${k}`;
+  const getArr = full => full.split(".").reduce((o, p) => o[p], state.textos);
+  function itemHead(sec, full, rel, i, n, label) {
+    return `<div class="li-head"><span>${esc(label)} ${i + 1}</span><div class="li-btns">${txVis(sec, rel, "este item")}
+        <button type="button" data-act="up" data-list="${full}" data-i="${i}" aria-label="Subir" ${i === 0 ? "disabled" : ""}>↑</button>
+        <button type="button" data-act="down" data-list="${full}" data-i="${i}" aria-label="Descer" ${i === n - 1 ? "disabled" : ""}>↓</button>
+        <button type="button" data-act="del" data-list="${full}" data-i="${i}" aria-label="Remover">×</button></div></div>`;
+  }
+  function listHTML(sec, rel, type, labels, key) {
+    const full = `${sec}.${rel}`, arr = getArr(full) || [], label = ITEM_LABEL[key] || "Item";
     const items = arr.map((it, i) => {
-      const p = `${base}.${i}`;
+      const p = `${full}.${i}`, r = `${rel}.${i}`;
       let body = "";
       if (type === "list") body = ta(p, it, 2);
       if (type === "pairs") body = inp(p + ".t", it.t, labels[0]) + ta(p + ".d", it.d, 2, labels[1]);
-      if (type === "etapas") body = `<label class="inc"><input type="checkbox" data-path="${p}.on" ${it.on !== false ? "checked" : ""}> Incluir nesta proposta</label>`
-        + inp(p + ".t", it.t, "Nome da frente") + ta(p + ".d", it.d, 3, "Descrição") + `<span class="sublbl">Inclui (opcional)</span>` + ta(p + ".e", it.e, 2, "Opcional: o que está incluído");
-      return `<div class="li${type === "etapas" && it.on === false ? " off" : ""}"><div class="li-head"><span>${ITEM_LABEL[k] || "Item"} ${i + 1}</span><div class="li-btns">
-        <button type="button" data-act="up" data-list="${base}" data-i="${i}" aria-label="Subir" ${i === 0 ? "disabled" : ""}>↑</button>
-        <button type="button" data-act="down" data-list="${base}" data-i="${i}" aria-label="Descer" ${i === arr.length - 1 ? "disabled" : ""}>↓</button>
-        <button type="button" data-act="del" data-list="${base}" data-i="${i}" aria-label="Remover">×</button></div></div>${body}</div>`;
+      if (type === "groups") body = inp(p + ".t", it.t, "Título do grupo") + `<span class="sublbl">Itens do grupo</span>` + listHTML(sec, r + ".itens", "list", null, "itens");
+      return `<div class="li${isOff(sec, r) ? " off" : ""}">${itemHead(sec, full, r, i, arr.length, label)}${body}</div>`;
     }).join("");
-    return `<div class="lst" data-type="${type}">${items}<button type="button" class="add" data-act="add" data-list="${base}" data-type="${type}">+ Adicionar ${String(ITEM_LABEL[k] || "item").toLowerCase()}</button></div>`;
+    return `<div class="lst" data-type="${type}">${items}<button type="button" class="add" data-act="add" data-list="${full}" data-type="${type}">+ Adicionar ${label.toLowerCase()}</button></div>`;
   }
   function secBody(S) {
     const t = state.textos[S.id];
-    return (S.note ? `<p class="hint-ui">${esc(S.note)}</p>` : "") + S.f.map(([k, label, type, labels]) => {
-      const p = `${S.id}.${k}`;
-      if (type === "list" || type === "pairs" || type === "etapas") return `<div class="field"><span class="lbl">${esc(label)}</span>${listHTML(S.id, k, type, labels)}</div>`;
-      return `<div class="field"><label>${esc(label)}</label>${type === "area" ? ta(p, t[k], 3) : inp(p, t[k])}</div>`;
-    }).join("") + `<button type="button" class="restore" data-restore="${S.id}">Restaurar textos desta página</button>`;
+    const top = S.fixa ? "" : `<div class="sec-vis"><span>${isOff(S.id, "_secao") ? "Esta seção está fora da proposta." : "Esta seção aparece na proposta."}</span>${txVis(S.id, "_secao", "esta seção inteira")}</div>`;
+    return top + (S.note ? `<p class="hint-ui">${esc(S.note)}</p>` : "") + S.f.map(([k, label, type, labels]) => {
+      const off = isOff(S.id, k);
+      if (type === "list" || type === "pairs" || type === "groups") return `<div class="field"><span class="lbl">${esc(label)}</span>${listHTML(S.id, k, type, labels, k)}</div>`;
+      return `<div class="field${off ? " off" : ""}"><div class="lblrow"><label>${esc(label)}</label>${txVis(S.id, k, "este texto")}</div>${type === "area" ? ta(`${S.id}.${k}`, t[k], 3) : inp(`${S.id}.${k}`, t[k])}</div>`;
+    }).join("") + `<button type="button" class="restore" data-restore="${S.id}">Restaurar textos desta seção</button>`;
   }
+  function secTag(S) { return isOff(S.id, "_secao") ? `<em class="offtag">Oculta</em>` : ""; }
   function drawTextos() {
     const open = new Set([...document.querySelectorAll("#txSecs details[open]")].map(d => d.dataset.sec));
     $("txSecs").innerHTML = SCHEMA.map((S, i) => `<details class="card glass more tx" data-sec="${S.id}"${open.has(S.id) ? " open" : ""}>
-      <summary><span class="pgn">${String(i + 1).padStart(2, "0")}</span><h3>${esc(S.nome)}</h3><em class="warn" hidden>Passou da página</em><i aria-hidden="true"></i></summary>
+      <summary><span class="pgn">${String(i + 1).padStart(2, "0")}</span><h3>${esc(S.nome)}</h3><span class="stag">${secTag(S)}</span><em class="warn" hidden>Passou da página</em><i aria-hidden="true"></i></summary>
       <div class="more-in" data-body="${S.id}">${secBody(S)}</div></details>`).join("");
     padraoInfo();
   }
-  // abrir uma página na aba Textos leva a prévia até ela
+  // abrir uma seção na aba Textos leva a prévia até ela
   $("txSecs").addEventListener("toggle", e => {
     if (!e.target.open || !e.target.dataset.sec) return;
-    const sh = document.querySelector(`#pages .sheet[data-sec="${e.target.dataset.sec}"]`);
+    const sh = document.querySelector(`#pages .sheet[data-sec~="${e.target.dataset.sec}"]`);
     if (sh && innerWidth > 860) sh.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   }, true);
   function redrawSection(sec) {
     const S = SCHEMA.find(x => x.id === sec), box = document.querySelector(`[data-body="${sec}"]`);
     if (S && box) box.innerHTML = secBody(S);
+    const tag = document.querySelector(`#txSecs details[data-sec="${sec}"] .stag`);
+    if (S && tag) tag.innerHTML = secTag(S);
   }
   function getPath(path) { const parts = path.split("."); let o = state.textos; for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]]; return [o, parts[parts.length - 1]]; }
+  // ao mover ou remover um item, os itens ocultos acompanham a nova posição
+  function remapOff(sec, rel, fn) {
+    const pre = rel + ".";
+    state.textos[sec].off = offList(sec).map(e => {
+      if (!e.startsWith(pre)) return e;
+      const rest = e.slice(pre.length), idx = parseInt(rest, 10);
+      if (isNaN(idx)) return e;
+      const n = fn(idx); return n < 0 ? null : pre + n + rest.slice(String(idx).length);
+    }).filter(Boolean);
+  }
   $("txSecs").addEventListener("input", e => {
     const p = e.target.dataset.path; if (!p) return;
-    const [o, k] = getPath(p); o[k] = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    if (e.target.type === "checkbox") e.target.closest(".li").classList.toggle("off", !e.target.checked);
+    const [o, k] = getPath(p); o[k] = e.target.value;
     changed();
   });
   $("txSecs").addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.vis) {
+      const [sec, path] = b.dataset.vis.split("|"), list = offList(sec), at = list.indexOf(path);
+      if (at >= 0) list.splice(at, 1); else list.push(path);
+      redrawSection(sec); changed();
+      return;
+    }
     if (b.dataset.restore) {
       const sec = b.dataset.restore, prev = G.clone(state.textos[sec]);
       state.textos[sec] = padrao()[sec]; redrawSection(sec); changed();
-      toast("Textos da página restaurados.", "", { label: "Desfazer", run: () => { state.textos[sec] = prev; redrawSection(sec); changed(); } });
+      toast("Textos da seção restaurados.", "", { label: "Desfazer", run: () => { state.textos[sec] = prev; redrawSection(sec); changed(); } });
       return;
     }
     const act = b.dataset.act; if (!act) return;
-    const [sec, k] = b.dataset.list.split("."), arr = state.textos[sec][k], i = +b.dataset.i;
+    const full = b.dataset.list, sec = full.split(".")[0], rel = full.slice(sec.length + 1), arr = getArr(full), i = +b.dataset.i;
+    const prev = G.clone(state.textos[sec]);
     if (act === "add") arr.push(NEW_ITEM[b.dataset.type]());
     if (act === "del") {
-      const removed = arr.splice(i, 1)[0];
-      toast("Item removido.", "", { label: "Desfazer", run: () => { arr.splice(i, 0, removed); redrawSection(sec); changed(); } });
+      arr.splice(i, 1); remapOff(sec, rel, j => j === i ? -1 : j > i ? j - 1 : j);
+      toast("Item removido.", "", { label: "Desfazer", run: () => { state.textos[sec] = prev; redrawSection(sec); changed(); } });
     }
-    if (act === "up" && i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
-    if (act === "down" && i < arr.length - 1) [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]];
+    if (act === "up" && i > 0) { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; remapOff(sec, rel, j => j === i ? i - 1 : j === i - 1 ? i : j); }
+    if (act === "down" && i < arr.length - 1) { [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]]; remapOff(sec, rel, j => j === i ? i + 1 : j === i + 1 ? i : j); }
     redrawSection(sec); changed();
-    if (act === "add") { const items = document.querySelectorAll(`[data-body="${sec}"] [data-path^="${sec}.${k}.${arr.length - 1}"]`); const f = [...items].find(x => x.type !== "checkbox"); f && f.focus(); }
+    if (act === "add") { const f = document.querySelector(`[data-body="${sec}"] [data-path^="${full}.${arr.length - 1}"]`); f && f.focus(); }
   });
 
   // inserir {cliente}, *destaque* etc. no último campo usado
@@ -309,10 +365,10 @@
     }, { rootMargin: "-45% 0px -45% 0px" });
     [...box.children].forEach(c => { io.observe(c); c.title = "Editar os textos desta página"; });
     const over = G.overflowing(box);
-    [...box.children].forEach(c => c.classList.toggle("over", over.includes(c.dataset.sec)));
+    [...box.children].forEach(c => c.classList.toggle("over", c.dataset.sec.split(" ").some(x => over.includes(x))));
     document.querySelectorAll("#txSecs details").forEach(d => { d.querySelector(".warn").hidden = !over.includes(d.dataset.sec); });
   }
-  $("pages").addEventListener("click", e => { const sh = e.target.closest(".sheet"); if (sh && sh.dataset.sec) openSection(sh.dataset.sec); });
+  $("pages").addEventListener("click", e => { const sh = e.target.closest(".sheet"); if (sh && sh.dataset.sec) openSection(sh.dataset.sec.split(" ")[0]); });
   let rz = null;
   new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => { if (!$("shell").hidden) render(); }, 90); }).observe($("preview"));
 
@@ -414,7 +470,7 @@
         const r = await fetch("/api/proposta?slug=" + encodeURIComponent(slug)); const p = await r.json();
         if (!r.ok) return toast(p.error || "Não foi possível abrir.", "err");
         const prev = { state, loadedSlug };
-        state = Object.assign({}, G.DEFAULTS, p); state.textos = G.textosDe(p); delete state.etapas;
+        state = Object.assign({}, G.DEFAULTS, p); state.textos = G.textosDe(p); delete state.etapas; state.ocultar = Object.assign({}, p.ocultar);
         loadedSlug = slug; fillForm(); render(); changed(); closeDrawer(); setTab("dados");
         toast("Editando " + p.cliente + ".", "", { label: "Desfazer", run: () => { state = prev.state; loadedSlug = prev.loadedSlug; fillForm(); render(); changed(); } });
       } catch (err) { toast("Sem conexão com o servidor.", "err"); }
@@ -436,7 +492,7 @@
   /* ---------- nova proposta e conta ---------- */
   $("btnNova").onclick = () => {
     const prev = { state, loadedSlug };
-    state = Object.assign({}, G.DEFAULTS, { cliente: "", valor: 0, obs: "", exito: "", data: G.todayISO(), textos: padrao() });
+    state = Object.assign({}, G.DEFAULTS, { cliente: "", valor: 0, obs: "", exito: "", data: G.todayISO(), ocultar: {}, textos: padrao() });
     loadedSlug = null; fillForm(); render(); changed(); setTab("dados"); $("f-cliente").focus();
     toast("Nova proposta em branco.", "", { label: "Desfazer", run: () => { state = prev.state; loadedSlug = prev.loadedSlug; fillForm(); render(); changed(); } });
   };
@@ -452,6 +508,7 @@
   }
   window.__gdmApp = { getState: () => state, playIntro };
   fillForm(); bindForm();
+  if (document.fonts) document.fonts.ready.then(() => { if (!$("shell").hidden) render(); });
   (async () => {
     const [ok] = await Promise.all([checkKey(), playIntro()]);
     if (ok === true) showShell();

@@ -81,13 +81,20 @@
     return s || "zero real";
   }
 
-  /* ---------- textos padrão (tudo isso é editável na aba Textos) ---------- */
+  function dataLonga(iso) { const p = (iso || todayISO()).split("-"); return parseInt(p[2], 10) + " de " + (MESES[parseInt(p[1],10)-1] || "") + " de " + p[0]; }
+
+  /* ---------- textos padrão (tudo isso é editável na aba Textos) ----------
+     Cada seção tem a lista "off" com os itens que ficam fora da proposta:
+     "_secao" tira a seção inteira, "paragrafos.1" tira um item de lista, "intro21" tira um campo. */
+  const VERSAO = "2";
   const TEXTOS = {
     capa: {
-      linha1: "Consultoria *Fiscal e Tributária*", linha2: "para grãos e cereais",
+      off: [],
+      linha1: "PROPOSTA DE *PRESTAÇÃO DE SERVIÇOS*", linha2: "",
       rotuloDest: "Destinatário", rotuloData: "Data", rotuloValidade: "Validade"
     },
     quem: {
+      off: [],
       eyebrow: "Quem somos", titulo: "Estratégia fiscal *para o agro crescer*",
       p1: "A GDM Estratégia Fiscal existe para desmistificar a burocracia tributária do agronegócio. Reduzimos custos fiscais e cuidamos da qualidade da sua atividade, para que a sua energia fique onde ela gera mais resultado: no desenvolvimento, na expansão e na inovação do negócio.",
       p2: "Não resolvemos apenas conflitos tributários. Alinhamos conformidade fiscal com eficiência financeira, com acompanhamento global e atualizado do panorama fiscal, sempre em defesa da empresa.",
@@ -107,86 +114,174 @@
       contatoTitulo: "Um único ponto de contato",
       contato: "Quando a demanda exige atuação privativa de advogado, a GDM conduz o projeto ao lado de escritórios de advocacia parceiros, especializados em direito tributário. Você conversa com um só time do início ao fim."
     },
-    contexto: {
-      eyebrow: "Objetivo", titulo: "Contexto e *objetivo*",
-      objetivoTitulo: "Objetivo do trabalho",
-      objetivo: "Prestar suporte técnico-fiscal e tributário contínuo à equipe da {cliente}, com segurança nas operações comerciais, mitigação de riscos fiscais e tributários e suporte estratégico às decisões que envolvem a comercialização de grãos, cereais e demais produtos do agronegócio.\nA atuação é integrada e abrange toda a cadeia operacional da empresa, da negociação e aquisição dos produtos ao faturamento, transporte, armazenagem, exportação e escrituração fiscal.",
-      recebeTitulo: "Benefícios para a {cliente}",
-      recebe: [
-        "Mais segurança fiscal nas operações de compra, venda, armazenagem, industrialização e exportação.",
-        "Menor exposição a autuações, glosas de crédito e contingências fiscais.",
-        "Validação prévia das operações de maior complexidade tributária.",
-        "Apoio permanente às equipes fiscal, contábil, comercial, logística e administrativa.",
-        "Atualização constante sobre mudanças legislativas, normativas e jurisprudenciais do agronegócio.",
-        "Orientação sobre os impactos e as adaptações exigidas pela Reforma Tributária.",
-        "Especialistas na tributação de grãos, sem ampliar a estrutura interna.",
-        "Análises fiscal e jurídica integradas, com mais previsibilidade nas decisões."
+    objetivo: {
+      off: [],
+      eyebrow: "", titulo: "1. *OBJETIVO*",
+      paragrafos: [
+        "A presente proposta tem por objetivo prestar suporte técnico-fiscal e tributário contínuo à equipe da *{cliente}*, proporcionando segurança nas operações comerciais, mitigação de riscos fiscais e tributários e suporte estratégico para tomada de decisões envolvendo a comercialização de grãos, cereais e demais produtos do agronegócio.",
+        "A atuação será realizada de forma integrada, abrangendo toda a cadeia operacional da empresa, desde a negociação e aquisição dos produtos até o faturamento, transporte, armazenagem, exportação e escrituração fiscal.",
+        "Considerando a dinâmica do mercado de grãos e commodities agrícolas, a *{cliente}* frequentemente se depara com oportunidades comerciais que exigem rápida avaliação tributária e fiscal, especialmente em operações interestaduais, novas rotas de comercialização e negociações que demandam resposta imediata ao mercado. Nesses cenários, a disponibilidade de suporte consultivo especializado e ágil torna-se fundamental para subsidiar a tomada de decisões da equipe comercial, permitindo a correta avaliação dos impactos tributários das operações, a mitigação de riscos fiscais e a preservação da competitividade e da rentabilidade dos negócios."
       ]
     },
     escopo: {
-      eyebrow: "Escopo", titulo: "Consultoria tributária *contínua*",
-      intro: "Atendimento permanente às demandas operacionais da {cliente} ligadas às rotinas fiscais e tributárias, por meio de consultas, reuniões técnicas e pareceres, conforme a complexidade da matéria.",
-      entregavelRotulo: "Inclui:",
-      etapas: [
-        { on: true, t: "Tributação das operações e apoio comercial", d: "Suporte rápido para oportunidades comerciais, inclusive emergenciais, operações interestaduais e expansão de mercados. Avaliação prévia dos impactos tributários de estruturas negociais e de operações não recorrentes, distribuição contratual dos riscos e responsabilidades tributárias e apoio na redação de cláusulas sobre tributos, em prazo compatível com a dinâmica das negociações.", e: "" },
-        { on: true, t: "ICMS", d: "Diferimentos, suspensões, benefícios e créditos fiscais, obrigações acessórias e procedimentos operacionais relacionados ao imposto.", e: "" },
-        { on: true, t: "PIS e COFINS", d: "Tratamento tributário nas operações de compra, de venda e destinadas à exportação, além dos créditos e regimes específicos aplicáveis ao setor.", e: "" },
-        { on: true, t: "Reforma Tributária", d: "Impactos da CBS e do IBS, reflexos na apuração dos tributos, adequações operacionais e fiscais para a transição e avaliação das oportunidades e riscos da implementação.", e: "" },
-        { on: true, t: "Procedimentos internos", d: "Avaliação dos procedimentos fiscais adotados, identificação de riscos e oportunidades tributárias, recomendações de adequação de controles e processos e fortalecimento da governança tributária.", e: "" }
+      off: [],
+      eyebrow: "", titulo: "2. *ESCOPO DOS SERVIÇOS*",
+      sub21: "2.1 Consultoria Tributariamente Contínua",
+      intro21: "A consultoria tributária fiscal compreende atendimento permanente às demandas operacionais da {cliente} relacionadas às rotinas tributárias e fiscais, incluindo:",
+      grupos21: [
+        { t: "Tributação das Operações", itens: [
+          "Distribuição contratual dos riscos tributários;",
+          "Responsabilidades tributárias das partes;",
+          "Impactos fiscais das condições negociais estabelecidas;",
+          "Suporte à elaboração de cláusulas relacionadas a tributos;",
+          "Suporte tributário rápido para análise de oportunidades comerciais emergenciais;",
+          "Orientação fiscal e tributária para operações interestaduais e expansão de mercados;",
+          "Avaliação preliminar dos impactos tributários de estruturas negociais antes da formalização dos negócios;",
+          "Apoio à equipe comercial na definição de estratégias que conciliem competitividade comercial e conformidade tributária;",
+          "Disponibilização de orientação consultiva em prazo compatível com a dinâmica das negociações e oportunidades de mercado;",
+          "Análise dos reflexos tributários de operações não recorrentes ou com estruturas diferenciadas de comercialização."] },
+        { t: "ICMS", itens: [
+          "Diferimentos;", "Suspensões;", "Benefícios fiscais;", "Créditos fiscais;", "Obrigações acessórias;",
+          "Procedimentos operacionais relacionados ao imposto."] },
+        { t: "PIS e COFINS", itens: [
+          "Tratamento tributário nas operações de compra;", "Tratamento tributário nas operações de venda;",
+          "Operações destinadas à exportação;", "Créditos e regimes específicos aplicáveis ao setor."] },
+        { t: "Reforma Tributária", itens: [
+          "Orientações acerca dos impactos da CBS e do IBS;", "Reflexos na apuração dos tributos;",
+          "Adequações operacionais e fiscais necessárias para a transição ao novo modelo tributário;",
+          "Avaliação de oportunidades e riscos decorrentes da implementação da Reforma Tributária."] },
+        { t: "Procedimentos Internos", itens: [
+          "Avaliação dos procedimentos fiscais atualmente adotados pela empresa;", "Identificação de riscos tributários;",
+          "Identificação de oportunidades tributárias;", "Recomendações de adequação de controles e processos;",
+          "Orientação para fortalecimento da governança tributária."] }
+      ],
+      lim21Titulo: "Limitação do Escopo",
+      lim21Intro: "Os serviços de consultoria fiscal não abrangem:",
+      lim21: [
+        "Auditoria fiscal;", "Revisão ou validação da escrituração fiscal;", "Revisão de declarações fiscais;",
+        "Certificação de conformidade tributária;",
+        "Levantamentos fiscais retrospectivos ou trabalhos de recuperação de créditos, salvo contratação específica."
+      ],
+      sub22: "2.2 Consultoria Tributária Contínua",
+      intro22: "Prestação de suporte tributário permanente para análise de situações tributárias relevantes à operação da {cliente}, por meio de consultas, reuniões técnicas e emissão de pareceres tributários, conforme a complexidade da matéria.",
+      contempla: "*O escopo contempla:*",
+      grupos22: [
+        { t: "Estruturação e Validação de Operações", itens: [
+          "Venda com fim específico de exportação;", "Operações por conta e ordem;", "Operações triangulares;",
+          "Remessas para armazenagem em terceiros;", "Transferências entre estabelecimentos;",
+          "Compras interestaduais de produtores rurais."] },
+        { t: "Benefícios Fiscais e Regimes Especiais", itens: [
+          "Preservação de diferimentos;", "Suspensões tributárias;", "Regimes especiais;",
+          "Benefícios fiscais estaduais e federais;", "Validação da documentação necessária para manutenção dos incentivos."] },
+        { t: "Suporte às Aquisições de Produtores Rurais", itens: [
+          "Avaliação de riscos tributários da cadeia de fornecimento;", "Responsabilidade tributária do adquirente;",
+          "Procedimentos cadastrais e documentais relacionados aos fornecedores;",
+          "Orientação preventiva para mitigação de passivos fiscais decorrentes de irregularidades dos fornecedores."] },
+        { t: "Créditos Tributários", itens: [
+          "Orientação quanto à legitimidade dos créditos tributários;", "Análise de riscos de glosa de créditos de ICMS;",
+          "Análise de riscos de glosa de créditos de PIS e COFINS;", "Créditos presumidos e regimes especiais;",
+          "Orientações acerca da documentação suporte dos créditos."] },
+        { t: "Apoio às Negociações Comerciais", itens: [
+          "Distribuição contratual dos riscos tributários;", "Responsabilidades tributárias das partes;",
+          "Impactos fiscais das condições negociais estabelecidas;", "Suporte à elaboração de cláusulas relacionadas a tributos."] },
+        { t: "Projetos e Decisões Estruturais", itens: [
+          "Abertura e encerramento de filiais;", "Operações com frota própria;", "Prestação de serviços de armazenagem;",
+          "Prestação de serviços de secagem;", "Reestruturação logística;",
+          "Avaliação de impactos tributários em novos modelos operacionais."] },
+        { t: "Atendimento a Demandas Fiscais", itens: [
+          "Análise de notificações fiscais;", "Cartas de cobrança;", "Avisos de divergência;", "Apontamentos de malha fiscal;",
+          "Orientação quanto às medidas cabíveis;", "Apoio técnico para elaboração de respostas preliminares."] },
+        { t: "Atualização Tributária Permanente", itens: [
+          "Monitoramento legislativo;", "Informativos sobre alterações legais relevantes;",
+          "Divulgação de decisões administrativas e judiciais com potencial impacto à atividade da empresa;",
+          "Orientação prática sobre os efeitos das mudanças normativas;",
+          "Compartilhamento de oportunidades tributárias identificadas durante o acompanhamento da legislação e jurisprudência."] }
+      ],
+      lim22Titulo: "Limitação do Escopo",
+      lim22Intro: "Os serviços não abrangem:",
+      lim22: [
+        "Auditoria fiscal ou contábil;", "Revisão de escriturações;", "Elaboração de declarações fiscais;",
+        "Patrocínio de processos administrativos ou judiciais;", "Elaboração de recursos administrativos ou judiciais;",
+        "Sustentação oral e representação perante órgãos públicos, salvo contratação específica."
       ]
     },
-    invest: {
-      eyebrow: "Honorários", titulo: "*Investimento*",
-      intro: "Pela execução dos serviços descritos nesta proposta, a {cliente} pagará honorários mensais, líquidos dos tributos incidentes sobre o faturamento.",
-      colComponente: "Componente", colValor: "Valor e condição",
-      linhaTitulo: "Consultoria fiscal e tributária contínua", linhaSub: "suporte consultivo descrito no escopo desta proposta",
-      exitoTitulo: "Honorários de êxito", exitoNota: "devidos somente sobre o benefício econômico efetivamente obtido",
-      totalRotulo: "Investimento mensal", obsTitulo: "Prazo de contratação",
-      outrosTitulo: "Outros serviços, sob proposta específica",
-      outros: "Levantamentos fiscais retrospectivos, recuperação de créditos, processos administrativos ou judiciais e demais demandas fora do escopo podem ser orçados separadamente, se houver interesse."
-    },
-    inicio: {
-      eyebrow: "Escopo", titulo: "Suporte em *operações e projetos*",
-      passos: [
-        { t: "Estruturação e validação de operações", d: "Venda com fim específico de exportação, operações por conta e ordem e triangulares, armazenagem em terceiros, transferências entre estabelecimentos e compras interestaduais de produtores." },
-        { t: "Benefícios fiscais e créditos", d: "Diferimentos, suspensões, regimes especiais e benefícios estaduais e federais. Legitimidade dos créditos, riscos de glosa de ICMS, PIS e COFINS e créditos presumidos." },
-        { t: "Aquisições de produtores rurais", d: "Riscos da cadeia de fornecimento, responsabilidade do adquirente e prevenção de passivos por irregularidades dos fornecedores." },
-        { t: "Projetos e decisões estruturais", d: "Filiais, frota própria, armazenagem e secagem, reestruturação logística e novos modelos operacionais." },
-        { t: "Demandas fiscais e atualização", d: "Notificações, cobranças, avisos de divergência e malha fiscal, com apoio em respostas preliminares. Monitoramento legislativo e informativos sobre mudanças relevantes." }
-      ],
-      docsTitulo: "Forma de atendimento",
-      docs: ["E-mail", "Telefone", "WhatsApp corporativo", "Reuniões virtuais agendadas", "Pareceres e memorandos técnicos"],
-      naoInclTitulo: "Limitação do escopo",
-      naoIncl: [
-        "Auditoria fiscal ou contábil, certificação de conformidade e revisão de escriturações e declarações.",
-        "Levantamentos retrospectivos e recuperação de créditos, salvo contratação específica.",
-        "Processos administrativos ou judiciais, recursos, sustentação oral e representação perante órgãos públicos."
-      ],
-      premissasTitulo: "Premissas",
-      premissas: [
-        "O trabalho parte das informações e documentos fornecidos pela {cliente}, que responde por sua veracidade e completude."
+    atendimento: {
+      off: [],
+      eyebrow: "", titulo: "3. *FORMA DE ATENDIMENTO*",
+      intro: "Os atendimentos poderão ser realizados por meio de:",
+      itens: [
+        "E-mail;", "Telefone;", "WhatsApp corporativo;",
+        "Reuniões virtuais e reuniões periódicas de alinhamento estratégico, quando necessário, previamente agendadas.",
+        "Emissão de pareceres, memorandos e orientações técnicas."
       ]
+    },
+    prazo: {
+      off: [],
+      eyebrow: "", titulo: "4. *PRAZO DE CONTRATAÇÃO*",
+      texto: "O contrato terá prazo mínimo de vigência de *12 (doze) meses*, contados da data de sua assinatura."
+    },
+    honorarios: {
+      off: [],
+      eyebrow: "", titulo: "5. *HONORÁRIOS*",
+      intro: "Pela execução dos serviços descritos nesta proposta, a {cliente} pagará honorários mensais de:",
+      rotulo: "",
+      liquido: "*Valor líquido dos tributos incidentes sobre o faturamento.*",
+      contempla: "O valor contempla o suporte consultivo fiscal e tributário contínuo descrito no escopo desta proposta.",
+      exitoTitulo: "Honorários de êxito", obsTitulo: "Observação"
+    },
+    beneficios: {
+      off: [],
+      eyebrow: "", titulo: "6. *BENEFÍCIOS PARA A {cliente}*",
+      intro: "A contratação da consultoria fiscal e tributária contínua proporcionará à {cliente}:",
+      itens: [
+        "Maior segurança fiscal e tributária nas operações de compra, venda, armazenagem, industrialização e exportação;",
+        "Redução da exposição a autuações, glosas de crédito e contingências fiscais;",
+        "Suporte técnico especializado para validação prévia de operações com maior complexidade tributária;",
+        "Apoio permanente às equipes fiscal, contábil, comercial, logística e administrativa na tomada de decisões;",
+        "Atualização constante sobre alterações legislativas, normativas e jurisprudenciais relevantes ao setor do agronegócio;",
+        "Identificação de riscos e oportunidades tributárias inerentes às operações da empresa;",
+        "Orientação quanto aos impactos e adaptações necessários em razão da implementação da Reforma Tributária;",
+        "Acesso a profissionais especializados na tributação do agronegócio e da comercialização de grãos, sem necessidade de ampliação da estrutura interna;",
+        "Integração entre as análises fiscal e jurídica, proporcionando maior consistência, segurança e previsibilidade às decisões empresariais;",
+        "Suporte preventivo, evitando que questões operacionais se transformem em contingências fiscais futuras."
+      ]
+    },
+    final: {
+      off: ["assinaCliente"],
+      eyebrow: "", titulo: "7. *CONSIDERAÇÕES FINAIS*",
+      paragrafos: [
+        "A presente proposta contempla atendimento consultivo contínuo, preventivo e estratégico, voltado à mitigação de riscos e ao suporte das operações rotineiras da {cliente}, permitindo que as decisões tributárias sejam tomadas com maior previsibilidade, segurança e eficiência.",
+        "O trabalho será desenvolvido em estreita cooperação com as equipes da {cliente}, buscando soluções práticas, juridicamente seguras e alinhadas às particularidades do mercado de grãos e commodities agrícolas.",
+        "Permanecemos à disposição para quaisquer esclarecimentos adicionais e esperamos contribuir para o fortalecimento da governança tributária e da segurança fiscal das operações da empresa."
+      ],
+      resumo: [
+        "*Investimento Mensal:* {valor} ({valor_extenso}) líquidos de tributos.",
+        "*Prazo Mínimo de Contratação:* 12 (doze) meses.",
+        "*Validade da Proposta:* {validade} dias."
+      ],
+      saudacao: "Atenciosamente,",
+      encerramento: "E, por estarem assim justas e contratadas, as partes firmam o presente em duas vias de igual teor.",
+      dataLinha: "Data: {data_longa}.",
+      assinaGdm: "GDM ESTRATÉGIA FISCAL", assinaTag: "Estratégia tributária com visão de negócio.",
+      assinaCliente: "De acordo · {cliente}", assinaClienteSub: "Nome, cargo e data"
     },
     cond: {
-      eyebrow: "Condições", titulo: "Condições gerais *da proposta*",
+      off: ["_secao"],
+      eyebrow: "", titulo: "Condições gerais *da proposta*",
       clausulas: [
         { t: "Formalização.", d: "Aceita esta proposta, as partes formalizarão o Contrato de Prestação de Serviços de Consultoria, do qual ela fará parte como anexo. Até a assinatura do contrato, o aceite desta proposta vincula as partes nos termos aqui previstos." },
-        { t: "Prazo.", d: "O contrato terá prazo mínimo de vigência de 12 (doze) meses, contados da data de sua assinatura." },
-        { t: "Vencimento e faturamento.", d: "Os honorários são mensais e vencem conforme a condição indicada no item Investimento. As notas fiscais serão enviadas ao e-mail informado com antecedência mínima de 5 (cinco) dias úteis do vencimento." },
+        { t: "Vencimento e faturamento.", d: "Os honorários são mensais e vencem conforme a condição indicada no item Honorários. As notas fiscais serão enviadas ao e-mail informado com antecedência mínima de 5 (cinco) dias úteis do vencimento." },
         { t: "Inadimplemento.", d: "O atraso no pagamento sujeita o valor devido a multa de 2% (dois por cento) e correção monetária até o efetivo pagamento, e autoriza a suspensão dos serviços até a regularização." },
-        { t: "Tributos.", d: "Os honorários são líquidos. Os tributos incidentes sobre o faturamento, inclusive os sujeitos à retenção na fonte, serão acrescidos ao valor faturado." },
         { t: "Despesas.", d: "Custas, taxas, deslocamentos e serviços de terceiros, quando necessários, correm por conta da contratante e dependem de sua aprovação prévia." },
         { t: "Atuação jurídica.", d: "Demandas que exijam atuação privativa de advogado serão conduzidas por escritório parceiro, mediante contratação própria, com acompanhamento da GDM." },
         { t: "Natureza da obrigação.", d: "Os serviços de consultoria constituem obrigação de meio, e não de resultado. Ressalvadas as hipóteses de dolo, a responsabilidade da GDM limita-se aos honorários efetivamente recebidos." },
         { t: "Confidencialidade e proteção de dados.", d: "Informações e documentos recebidos serão usados exclusivamente na execução dos serviços, mantidos em sigilo e tratados nos termos da Lei nº 13.709/2018 (LGPD)." },
         { t: "Anticorrupção.", d: "As partes obrigam-se a cumprir a Lei nº 12.846/2013, abstendo-se de oferecer, prometer ou efetuar qualquer vantagem indevida relacionada a esta contratação." },
-        { t: "Assinatura eletrônica.", d: "As partes reconhecem a validade da assinatura eletrônica desta proposta e do contrato." },
-        { t: "Validade e aceite.", d: "Esta proposta é válida por {validade} ({validade_extenso}) dias a partir de {data}. Estando de acordo, basta assinar no campo abaixo ou confirmar o aceite por escrito." }
-      ],
-      fechamento: "Permanecemos à disposição para quaisquer esclarecimentos e esperamos contribuir para o fortalecimento da governança tributária e da segurança fiscal das operações da {cliente}.",
-      assinaGdm: "GDM Estratégia Fiscal", assinaCliente: "De acordo · {cliente}", assinaClienteSub: "Nome, cargo e data"
+        { t: "Assinatura eletrônica.", d: "As partes reconhecem a validade da assinatura eletrônica desta proposta e do contrato." }
+      ]
     },
     contra: {
+      off: [],
       tag: "Estratégia tributária com visão de negócio",
       whatsapp: "(65) 99696-3745", site: "gdmestrategiafiscal.com.br", instagram: "@gdm_estrategia_fiscal",
       endereco: "Rua Teodorico Pereira, 131, Bairro Novo Horizonte, Nortelândia/MT, CEP 78430-000"
@@ -196,149 +291,258 @@
   const DEFAULTS = {
     cliente: "Futuro Cereais",
     valor: 1500000,
-    condicao: "por mês, líquido de tributos",
-    obs: "O contrato terá prazo mínimo de vigência de 12 (doze) meses, contados da data de sua assinatura. O valor contempla o suporte consultivo fiscal e tributário contínuo descrito no escopo desta proposta.",
-    assunto: "Suporte fiscal e tributário contínuo para a comercialização de grãos, cereais e demais produtos do agronegócio.",
-    contexto: "No mercado de grãos e commodities agrícolas, a {cliente} frequentemente se depara com oportunidades comerciais que exigem rápida avaliação tributária e fiscal, especialmente em operações interestaduais, novas rotas de comercialização e negociações que pedem resposta imediata.\nNesses cenários, um suporte consultivo especializado e ágil é fundamental para subsidiar as decisões da equipe comercial, avaliar corretamente os impactos tributários das operações, mitigar riscos fiscais e preservar a competitividade e a rentabilidade dos negócios.",
-    exito: "", data: todayISO(), validade: 30, cidade: "Nortelândia/MT", resp: "Arminda Frota"
+    condicao: "por mês",
+    obs: "",
+    assunto: "Consultoria Fiscal e Tributária para Comercialização de Grãos e Cereais",
+    contexto: "",
+    exito: "", data: todayISO(), validade: 30, cidade: "Nortelândia/MT", resp: "Arminda Frota",
+    ocultar: {}
   };
 
-  // Junta os textos salvos com o padrão (preenche o que faltar; propostas antigas usavam "etapas" como lista de ids).
-  const ETAPA_IDS = ["diag", "mapa", "plano", "acomp"];
+  // Campos da aba Dados que podem sair da proposta, e as variáveis que deixam de existir quando saem.
+  const CAMPOS = ["cliente", "valor", "condicao", "obs", "assunto", "contexto", "exito", "data", "validade", "cidade", "resp"];
+  const VARS_DO_CAMPO = { valor: ["valor", "valor_extenso"], condicao: ["condicao"], data: ["data", "data_longa"],
+    validade: ["validade", "validade_extenso"], cidade: ["cidade"], resp: ["resp"] };
+  const SEM_NOME = "CONTRATANTE"; // usado no lugar do nome quando o nome do cliente sai da proposta
+
+  // Junta os textos salvos com o padrão. Textos do modelo anterior (sem versão) são trocados pelo padrão atual.
   function textosDe(s) {
-    const t = (s && s.textos) || {}, out = {};
+    const t = (s && s.textos && s.textos.v === VERSAO) ? s.textos : {}, out = { v: VERSAO };
     for (const k in TEXTOS) out[k] = Object.assign(clone(TEXTOS[k]), t[k] && typeof t[k] === "object" ? clone(t[k]) : {});
-    if (!(t.escopo && Array.isArray(t.escopo.etapas)) && s && Array.isArray(s.etapas))
-      out.escopo.etapas = TEXTOS.escopo.etapas.map((e, i) => Object.assign(clone(e), { on: s.etapas.includes(ETAPA_IDS[i]) }));
     return out;
   }
   const whatsDigits = w => { const d = String(w || "").replace(/\D/g, ""); return d.length >= 10 && d.length <= 11 ? "55" + d : d; };
+  const oculto = (s, k) => Boolean(s && s.ocultar && s.ocultar[k]);
+  const nomeVisivel = s => oculto(s, "cliente") ? "" : String((s && s.cliente) || "").trim();
 
   /* ---------- páginas ---------- */
+  const SECOES = ["capa", "quem", "objetivo", "escopo", "atendimento", "prazo", "honorarios", "beneficios", "final", "cond", "contra"];
+  const NOVA_PAGINA = { quem: true, objetivo: true, cond: true };
+
   function renderPages(input) {
     const s = Object.assign({}, DEFAULTS, input);
     const X = textosDe(s);
+    const hide = k => oculto(s, k);
     const validade = Math.max(1, parseInt(s.validade, 10) || 30);
+    const nome = hide("cliente") ? "" : (s.cliente || "");
     const vars = {
-      cliente: s.cliente || "Cliente", valor: fmtMoney(s.valor), valor_extenso: reaisExtenso(s.valor),
-      validade: String(validade), validade_extenso: inteiroExtenso(validade), data: dataCurta(s.data),
-      cidade: s.cidade || "", condicao: s.condicao || ""
+      cliente: nome || SEM_NOME, valor: fmtMoney(s.valor), valor_extenso: reaisExtenso(s.valor),
+      validade: String(validade), validade_extenso: inteiroExtenso(validade), data: dataCurta(s.data), data_longa: dataLonga(s.data),
+      cidade: s.cidade || "", condicao: s.condicao || "", resp: s.resp || ""
     };
+    const semVar = new Set(); for (const k in VARS_DO_CAMPO) if (hide(k)) VARS_DO_CAMPO[k].forEach(v => semVar.add(v));
     // T(): escapa, troca {variáveis} e transforma *trecho* em destaque.
     const T = str => esc(str).replace(/\{([a-z_]+)\}/g, (m, k) => k in vars ? esc(vars[k]) : m).replace(/\*([^*\n]+)\*/g, "<b>$1</b>");
-    const P = str => String(str || "").split(/\n+/).map(x => x.trim()).filter(Boolean).map(x => `<p class="just">${T(x)}</p>`).join("");
-    const LI = arr => (arr || []).filter(x => String(x).trim()).map(x => `<li>${T(x)}</li>`).join("");
-    const head = (e, t) => `<div><div class="eyebrow"><img src="${ART.mark}" alt="">${T(e)}</div><h2 class="sec">${T(t)}</h2></div>`;
-    const foot = n => `<div class="foot"><span>GDM Estratégia Fiscal · Proposta ${esc(vars.cliente)}</span><span>${String(n).padStart(2,"0")}</span></div>`;
+    // ok(): o texto existe e não depende de um dado que saiu da proposta.
+    const ok = str => String(str || "").trim() !== "" && ![...String(str).matchAll(/\{([a-z_]+)\}/g)].some(m => semVar.has(m[1]));
+    const on = (sec, path) => !(X[sec].off || []).includes(path);
+    const txt = (sec, k) => on(sec, k) && ok(X[sec][k]) ? X[sec][k] : "";
+    const vis = (sec, k) => (X[sec][k] || []).map((x, i) => [x, i]).filter(([x, i]) => on(sec, k + "." + i));
+    const P = str => String(str || "").split(/\n+/).map(x => x.trim()).filter(ok).map(x => `<p class="just">${T(x)}</p>`).join("");
+    const LI = arr => arr.filter(ok).map(x => `<li>${T(x)}</li>`).join("");
     const band = `<img class="band" src="${ART.band}" alt="">`;
-    const etapas = (X.escopo.etapas || []).filter(e => e.on !== false && String(e.t || "").trim());
-    let n = 1; const pages = [];
 
+    // Blocos de cada seção; depois são distribuídos nas folhas conforme cabem.
+    const B = [];
+    const add = (sec, html, keep) => { if (html) B.push({ sec, html, keep: !!keep }); };
+    const head = sec => {
+      const e = txt(sec, "eyebrow"), t = txt(sec, "titulo");
+      if (!e && !t) return;
+      add(sec, `<div class="shead">${e ? `<div class="eyebrow"><img src="${ART.mark}" alt="">${T(e)}</div>` : ""}${t ? `<h2 class="sec">${T(t)}</h2>` : ""}</div>`, true);
+    };
+    const secao = sec => on(sec, "_secao");
+    // listas entram item por item, para poderem continuar na folha seguinte
+    const lista = (sec, arr) => arr.filter(ok).forEach(x => add(sec, `<ul class="dots dots-c"><li>${T(x)}</li></ul>`));
+
+    if (secao("quem")) {
+      const Q = X.quem, sec = "quem";
+      head(sec);
+      if (txt(sec, "p1")) add(sec, `<p class="lead">${T(Q.p1)}</p>`);
+      if (txt(sec, "p2")) add(sec, `<p class="lead">${T(Q.p2)}</p>`);
+      if (txt(sec, "proposito")) add(sec, `<div class="box-g">${txt(sec, "propositoTitulo") ? `<h4>${T(Q.propositoTitulo)}</h4>` : ""}${P(Q.proposito)}</div>`);
+      const pil = vis(sec, "pilares").filter(([p]) => ok(p.t));
+      if (pil.length) {
+        if (txt(sec, "pilaresTitulo")) add(sec, `<div class="h3">${T(Q.pilaresTitulo)}</div>`, true);
+        add(sec, `<div class="pillars">${pil.map(([p]) => `<div class="pill"><img src="${ART.mark}" alt=""><div><b>${T(p.t)}</b>${ok(p.d) ? `<span>${T(p.d)}</span>` : ""}</div></div>`).join("")}</div>`);
+      }
+      if (txt(sec, "contato")) add(sec, `<div class="box">${txt(sec, "contatoTitulo") ? `<div class="h3">${T(Q.contatoTitulo)}</div>` : ""}${P(Q.contato)}</div>`);
+    }
+
+    if (secao("objetivo")) {
+      const sec = "objetivo";
+      head(sec);
+      vis(sec, "paragrafos").forEach(([p]) => add(sec, P(p)));
+      if (!hide("contexto") && ok(s.contexto)) add(sec, `<div class="box">${P(s.contexto)}</div>`);
+    }
+
+    if (secao("escopo")) {
+      const E = X.escopo, sec = "escopo";
+      const grupos = k => vis(sec, k).forEach(([g, i]) => {
+        const itens = (g.itens || []).filter((x, j) => on(sec, `${k}.${i}.itens.${j}`)).filter(ok);
+        if (ok(g.t) && itens.length) add(sec, `<h5 class="grp-h">${T(g.t)}</h5>`, true);
+        lista(sec, itens);
+      });
+      const lim = (tk, ik, lk) => {
+        const li = LI(vis(sec, lk).map(([x]) => x));
+        if (!li && !txt(sec, ik)) return;
+        add(sec, `<div class="box-g">${txt(sec, tk) ? `<h4>${T(E[tk])}</h4>` : ""}${txt(sec, ik) ? `<p>${T(E[ik])}</p>` : ""}${li ? `<ul class="dots">${li}</ul>` : ""}</div>`);
+      };
+      head(sec);
+      if (txt(sec, "sub21")) add(sec, `<div class="h3">${T(E.sub21)}</div>`, true);
+      if (txt(sec, "intro21")) add(sec, `<p class="just">${T(E.intro21)}</p>`, true);
+      grupos("grupos21");
+      lim("lim21Titulo", "lim21Intro", "lim21");
+      if (txt(sec, "sub22")) add(sec, `<div class="h3">${T(E.sub22)}</div>`, true);
+      if (txt(sec, "intro22")) add(sec, `<p class="just">${T(E.intro22)}</p>`, true);
+      if (txt(sec, "contempla")) add(sec, `<p>${T(E.contempla)}</p>`, true);
+      grupos("grupos22");
+      lim("lim22Titulo", "lim22Intro", "lim22");
+    }
+
+    if (secao("atendimento")) {
+      const sec = "atendimento";
+      head(sec);
+      if (txt(sec, "intro")) add(sec, `<p class="just">${T(X[sec].intro)}</p>`, true);
+      lista(sec, vis(sec, "itens").map(([x]) => x));
+    }
+
+    if (secao("prazo")) {
+      const sec = "prazo";
+      head(sec);
+      if (txt(sec, "texto")) add(sec, P(X[sec].texto));
+    }
+
+    if (secao("honorarios")) {
+      const H = X.honorarios, sec = "honorarios";
+      head(sec);
+      // a introdução termina em "honorários mensais de:", então sai junto com o valor
+      if (!hide("valor") && txt(sec, "intro")) add(sec, `<p class="just">${T(H.intro)}</p>`, true);
+      if (!hide("valor")) {
+        const cond = hide("condicao") ? "" : String(s.condicao || "").trim();
+        const ext = "(" + esc(vars.valor_extenso) + ")" + (cond ? (/^(por|ao|mensal)/i.test(cond) ? " " : ", ") + esc(cond) : "");
+        add(sec, `<div class="total">${txt(sec, "rotulo") ? `<span class="lbl">${T(H.rotulo)}</span>` : ""}<span class="big">${esc(vars.valor)}</span><span class="ext">${ext}</span></div>`);
+      }
+      if (txt(sec, "liquido")) add(sec, `<p>${T(H.liquido)}</p>`);
+      if (txt(sec, "contempla")) add(sec, `<p class="just">${T(H.contempla)}</p>`);
+      if (!hide("exito") && ok(s.exito)) add(sec, `<div class="obs"><h4>${T(H.exitoTitulo)}</h4><p>${esc(String(s.exito).trim())}</p></div>`);
+      if (!hide("obs") && String(s.obs || "").trim()) add(sec, `<div class="obs"><h4>${T(H.obsTitulo)}</h4><p>${esc(String(s.obs).trim())}</p></div>`);
+    }
+
+    if (secao("beneficios")) {
+      const sec = "beneficios";
+      head(sec);
+      if (txt(sec, "intro")) add(sec, `<p class="just">${T(X[sec].intro)}</p>`, true);
+      lista(sec, vis(sec, "itens").map(([x]) => x));
+    }
+
+    if (secao("final")) {
+      const F = X.final, sec = "final";
+      head(sec);
+      vis(sec, "paragrafos").forEach(([p]) => add(sec, P(p)));
+      const res = vis(sec, "resumo").map(([x]) => x).filter(ok);
+      if (res.length) add(sec, `<div class="box">${res.map(x => `<p>${T(x)}</p>`).join("")}</div>`);
+      const fecho = ["saudacao", "encerramento", "dataLinha"].filter(k => txt(sec, k)).map(k => `<p>${T(F[k])}</p>`).join("");
+      if (fecho) add(sec, `<div class="fecho">${fecho}</div>`, true);
+      const gdm = [!hide("resp") && ok(s.resp) ? `<b>${esc(s.resp)}</b>` : "", txt(sec, "assinaGdm") ? `<b>${T(F.assinaGdm)}</b>` : "", txt(sec, "assinaTag") ? `<small>${T(F.assinaTag)}</small>` : ""].join("");
+      const cli = txt(sec, "assinaCliente") ? `<div><b>${T(F.assinaCliente)}</b>${txt(sec, "assinaClienteSub") ? `<small>${T(F.assinaClienteSub)}</small>` : ""}</div>` : "";
+      if (gdm || cli) add(sec, `<div class="sign">${gdm ? `<div>${gdm}</div>` : ""}${cli}</div>`);
+    }
+
+    if (secao("cond")) {
+      const sec = "cond";
+      head(sec);
+      const cl = vis(sec, "clausulas").filter(([c]) => ok(c.t) || ok(c.d));
+      if (cl.length) add(sec, `<ol class="clauses">${cl.map(([c]) => `<li><span>${ok(c.t) ? `<b>${T(c.t)}</b> ` : ""}${ok(c.d) ? T(c.d) : ""}</span></li>`).join("")}</ol>`);
+    }
+
+    // capa
+    const C = X.capa, pages = [], secs = [];
+    const meta = [
+      nome && on("capa", "rotuloDest") ? `<dt>${T(C.rotuloDest)}</dt><dd>${esc(nome)}</dd>` : "",
+      !hide("data") && on("capa", "rotuloData") ? `<dt>${T(C.rotuloData)}</dt><dd>${!hide("cidade") && s.cidade ? esc(s.cidade) + ", " : ""}${dataExtensa(s.data)}</dd>` : "",
+      !hide("validade") && on("capa", "rotuloValidade") ? `<dt>${T(C.rotuloValidade)}</dt><dd>${validade} dias</dd>` : ""
+    ].join("");
     pages.push(`<div class="pg dark">
       <img class="cover-art" src="${ART.cover}" alt="">
       <div class="cover-in">
         <img class="logo" src="${IMG.claro}" alt="GDM Estratégia Fiscal e Comércio de Grãos">
-        <h1>${T(X.capa.linha1)}<br>${T(X.capa.linha2)}</h1>
-        <p class="sub">${T(s.assunto)}</p>
+        <h1>${[txt("capa", "linha1"), txt("capa", "linha2")].filter(Boolean).map(T).join("<br>")}</h1>
+        ${!hide("assunto") && ok(s.assunto) ? `<p class="sub">${T(s.assunto)}</p>` : ""}
       </div>
-      <dl class="cover-meta">
-        <dt>${T(X.capa.rotuloDest)}</dt><dd>${esc(vars.cliente)}</dd>
-        <dt>${T(X.capa.rotuloData)}</dt><dd>${esc(s.cidade || "")}${s.cidade ? ", " : ""}${dataExtensa(s.data)}</dd>
-        <dt>${T(X.capa.rotuloValidade)}</dt><dd>${validade} dias</dd>
-      </dl>
+      ${meta ? `<dl class="cover-meta">${meta}</dl>` : ""}
       <div class="cover-line"></div>
-    </div>`);
+    </div>`); secs.push("capa");
 
-    const Q = X.quem;
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(Q.eyebrow, Q.titulo)}
-        ${Q.p1 ? `<p class="lead">${T(Q.p1)}</p>` : ""}${Q.p2 ? `<p class="lead">${T(Q.p2)}</p>` : ""}
-        ${Q.proposito ? `<div class="box-g"><h4>${T(Q.propositoTitulo)}</h4>${P(Q.proposito)}</div>` : ""}
-        ${(Q.pilares || []).length ? `<div class="h3">${T(Q.pilaresTitulo)}</div>
-        <div class="pillars">${Q.pilares.filter(p => String(p.t || "").trim()).map(p => `<div class="pill"><img src="${ART.mark}" alt=""><div><b>${T(p.t)}</b><span>${T(p.d)}</span></div></div>`).join("")}</div>` : ""}
-        ${Q.contato ? `<div class="box"><div class="h3">${T(Q.contatoTitulo)}</div>${P(Q.contato)}</div>` : ""}
-      </div>${foot(n)}</div>`);
+    // folhas internas: os blocos vão entrando até não caber mais
+    const rodape = nome ? "GDM Estratégia Fiscal · Proposta " + esc(nome) : "GDM Estratégia Fiscal · Proposta";
+    const corpos = paginar(B);
+    corpos.forEach((pg, i) => {
+      pages.push(`<div class="pg">${band}<div class="body">${pg.blocks.map(b => b.html).join("")}</div><div class="foot"><span>${rodape}</span><span>${String(i + 2).padStart(2, "0")}</span></div></div>`);
+      secs.push([...new Set(pg.blocks.map(b => b.sec))].join(" "));
+    });
 
-    const C = X.contexto;
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(C.eyebrow, C.titulo)}
-        <div class="box">${P(String(s.contexto || "")) || '<p class="just">Descreva o contexto do cliente na aba Dados.</p>'}</div>
-        ${C.objetivo ? `<div class="box-g"><h4>${T(C.objetivoTitulo)}</h4>${P(C.objetivo)}</div>` : ""}
-        ${(C.recebe || []).length ? `<div class="h3">${T(C.recebeTitulo)}</div><ul class="dots">${LI(C.recebe)}</ul>` : ""}
-      </div>${foot(n)}</div>`);
-
-    const E = X.escopo;
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(E.eyebrow, E.titulo)}
-        ${E.intro ? `<p class="lead">${T(E.intro)}</p>` : ""}
-        <div class="steps">${etapas.map((e, i) => `<div class="step"><div class="n">${i+1}</div><div><h5>${T(e.t)}</h5>${P(e.d)}${String(e.e || "").trim() ? `<p class="del"><b>${T(E.entregavelRotulo)}</b> ${T(e.e)}</p>` : ""}</div></div>`).join("") || "<p>Inclua ao menos uma etapa na aba Textos.</p>"}</div>
-      </div>${foot(n)}</div>`);
-
-    const I = X.invest;
-    const sub = String(I.linhaSub || "").trim() ? T(I.linhaSub) : etapas.map(e => esc(String(e.t).toLowerCase())).join(", ");
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(I.eyebrow, I.titulo)}
-        ${I.intro ? `<p class="lead">${T(I.intro)}</p>` : ""}
-        <div class="tbl">
-          <div class="th"><span>${T(I.colComponente)}</span><span>${T(I.colValor)}</span></div>
-          <div class="tr"><div><b>${T(I.linhaTitulo)}</b><small>${sub}</small></div>
-            <div class="val"><b>${esc(vars.valor)}</b><small>${esc(s.condicao || "")}</small></div></div>
-          ${s.exito ? `<div class="tr alt"><div><b>${T(I.exitoTitulo)}</b><small>${T(I.exitoNota)}</small></div><div class="val"><b style="font-size:12.5px">${esc(s.exito)}</b></div></div>` : ""}
-        </div>
-        <div class="total">
-          <span class="lbl">${T(I.totalRotulo)}</span><span class="big">${esc(vars.valor)}</span>
-          <span class="ext">(${esc(vars.valor_extenso)}), ${esc(s.condicao || "conforme condição acordada")}${s.exito ? ", além dos honorários de êxito descritos acima" : ""}.</span>
-        </div>
-        ${String(s.obs || "").trim() ? `<div class="obs"><h4>${T(I.obsTitulo)}</h4><p>${esc(String(s.obs).trim())}</p></div>` : ""}
-        ${I.outros ? `<div class="h3">${T(I.outrosTitulo)}</div>${P(I.outros)}` : ""}
-      </div>${foot(n)}</div>`);
-
-    const N = X.inicio;
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(N.eyebrow, N.titulo)}
-        ${(N.passos || []).length ? `<div class="steps">${N.passos.filter(p => String(p.t || "").trim()).map((p, i) => `<div class="step"><div class="n">${i+1}</div><div><h5>${T(p.t)}</h5>${P(p.d)}</div></div>`).join("")}</div>` : ""}
-        ${(N.docs || []).length ? `<div class="h3">${T(N.docsTitulo)}</div><div class="chips">${N.docs.filter(x => String(x).trim()).map(x => `<span>${T(x)}</span>`).join("")}</div>` : ""}
-        ${(N.naoIncl || []).length ? `<div class="box-g"><h4>${T(N.naoInclTitulo)}</h4><ul class="dots">${LI(N.naoIncl)}</ul></div>` : ""}
-        ${(N.premissas || []).length ? `<div class="box"><div class="h3">${T(N.premissasTitulo)}</div><ul class="dots">${LI(N.premissas)}</ul></div>` : ""}
-      </div>${foot(n)}</div>`);
-
-    const K = X.cond;
-    n++; pages.push(`<div class="pg">${band}<div class="body">
-        ${head(K.eyebrow, K.titulo)}
-        <ol class="clauses">${(K.clausulas || []).filter(c => String(c.t || c.d || "").trim()).map(c => `<li><span><b>${T(c.t)}</b> ${T(c.d)}</span></li>`).join("")}</ol>
-        ${K.fechamento ? `<p>${T(K.fechamento)}</p>` : ""}
-        <div class="sign">
-          <div><b>${T(K.assinaGdm)}</b><small>${esc(s.resp || "Responsável pela GDM")}</small></div>
-          <div><b>${T(K.assinaCliente)}</b><small>${T(K.assinaClienteSub)}</small></div>
-        </div>
-      </div>${foot(n)}</div>`);
-
+    // contracapa
     const Z = X.contra;
-    const contato = [Z.whatsapp && `<b>WhatsApp</b> ${T(Z.whatsapp)}`, Z.site && `<b>Site</b> ${T(Z.site)}`, Z.instagram && `<b>Instagram</b> ${T(Z.instagram)}`].filter(Boolean).join(" · ");
-    pages.push(`<div class="pg dark">
-      <img class="cover-art" src="${ART.cover}" alt="" style="opacity:.55">
-      <div class="back-in"><img class="logo" src="${IMG.claro}" alt="GDM"><span class="tag">${T(Z.tag)}</span></div>
-      <div class="back-contact"><span>${contato}</span>${Z.endereco ? `<span>${T(Z.endereco)}</span>` : ""}</div>
-    </div>`);
+    if (on("contra", "_secao")) {
+      const contato = [txt("contra", "whatsapp") && `<b>WhatsApp</b> ${T(Z.whatsapp)}`, txt("contra", "site") && `<b>Site</b> ${T(Z.site)}`, txt("contra", "instagram") && `<b>Instagram</b> ${T(Z.instagram)}`].filter(Boolean).join(" · ");
+      pages.push(`<div class="pg dark">
+        <img class="cover-art" src="${ART.cover}" alt="" style="opacity:.55">
+        <div class="back-in"><img class="logo" src="${IMG.claro}" alt="GDM">${txt("contra", "tag") ? `<span class="tag">${T(Z.tag)}</span>` : ""}</div>
+        <div class="back-contact">${contato ? `<span>${contato}</span>` : ""}${txt("contra", "endereco") ? `<span>${T(Z.endereco)}</span>` : ""}</div>
+      </div>`); secs.push("contra");
+    }
+    pages.secs = secs;
     return pages;
   }
 
-  /* página de cada seção (usado para ligar a prévia à aba Textos) */
-  const SECOES = ["capa", "quem", "contexto", "escopo", "invest", "inicio", "cond", "contra"];
+  /* distribui os blocos nas folhas medindo a altura real de cada um */
+  let medidor = null;
+  function paginar(blocks) {
+    if (!blocks.length) return [];
+    if (typeof document === "undefined" || !document.body) return [{ blocks }];
+    if (!medidor || !medidor.isConnected) {
+      medidor = document.createElement("div");
+      medidor.setAttribute("aria-hidden", "true");
+      medidor.style.cssText = "position:fixed;left:-30000px;top:0;width:794px;visibility:hidden;pointer-events:none";
+      medidor.innerHTML = `<div class="pg"><div class="body"></div></div>`;
+      document.body.appendChild(medidor);
+    }
+    const body = medidor.querySelector(".body");
+    const cabe = () => body.scrollHeight <= body.clientHeight + 1;
+    const out = []; let atual = [];
+    const fecha = () => { if (atual.length) out.push({ blocks: atual }); atual = []; body.innerHTML = ""; };
+    const poe = b => { atual.push(b); body.insertAdjacentHTML("beforeend", b.html); };
+    blocks.forEach((b, i) => {
+      const novaSecao = i > 0 && b.sec !== blocks[i - 1].sec;
+      if (novaSecao && NOVA_PAGINA[b.sec]) fecha();
+      poe(b);
+      if (cabe() || atual.length === 1) return;
+      // não coube: volta este bloco e os títulos que ficariam sozinhos no fim da folha
+      atual.pop();
+      const levar = [];
+      while (atual.length && atual[atual.length - 1].keep) levar.unshift(atual.pop());
+      if (!atual.length) { atual = levar.concat([b]); return; } // nem sozinho cabe: fica na folha (aviso de "passou")
+      fecha();
+      levar.forEach(poe); poe(b);
+    });
+    fecha();
+    return out;
+  }
 
   /* monta as folhas em escala dentro de um container */
   function mount(container, pages, maxW) {
     const avail = Math.max(240, Math.min(maxW || 9999, container.clientWidth));
     const sc = Math.min(1, avail / PAGE_W);
+    const secs = pages.secs || [];
     container.innerHTML = pages.map((p, i) =>
-      `<div class="sheet" data-page="${i+1}" data-sec="${SECOES[i] || ""}" style="width:${PAGE_W*sc}px;height:${PAGE_H*sc}px">${p.replace('<div class="pg', '<div style="transform:scale(' + sc + ')" class="pg')}</div>`).join("");
+      `<div class="sheet" data-page="${i+1}" data-sec="${secs[i] || ""}" style="width:${PAGE_W*sc}px;height:${PAGE_H*sc}px">${p.replace('<div class="pg', '<div style="transform:scale(' + sc + ')" class="pg')}</div>`).join("");
     return sc;
   }
   // Páginas cujo texto passou da área útil da folha.
   function overflowing(container) {
     return [...container.querySelectorAll(".sheet")].filter(sh => {
       const b = sh.querySelector(".pg .body"); return b && b.scrollHeight > b.clientHeight + 2;
-    }).map(sh => sh.dataset.sec);
+    }).flatMap(sh => sh.dataset.sec.split(" "));
   }
 
   /* ---------- PDF (html2canvas + jsPDF) ---------- */
@@ -359,12 +563,13 @@
       pdf.addImage(canvas.toDataURL("image/jpeg", 0.9), "JPEG", 0, 0, 210, 297, undefined, "FAST");
     }
     host.innerHTML = "";
-    pdf.setProperties({ title: "Proposta GDM · " + (s.cliente || ""), author: "GDM Estratégia Fiscal" });
+    const nome = nomeVisivel(s);
+    pdf.setProperties({ title: "Proposta GDM" + (nome ? " · " + nome : ""), author: "GDM Estratégia Fiscal" });
     return pdf;
   }
-  const pdfName = s => "Proposta GDM - " + (String(s.cliente || "cliente").replace(/[\\/:*?"<>|]+/g, "").trim() || "cliente") + ".pdf";
+  const pdfName = s => { const n = nomeVisivel(s).replace(/[\\/:*?"<>|]+/g, "").trim(); return "Proposta GDM" + (n ? " - " + n : "") + ".pdf"; };
   const savePdf = async (pdf, name) => pdf.save(name);
 
-  window.GDM = { savePdf, PAGE_W, PAGE_H, ART, IMG, TEXTOS, DEFAULTS, SECOES, textosDe, whatsDigits, clone, esc, fmtMoney, BRL,
-    reaisExtenso, inteiroExtenso, slugify, todayISO, dataExtensa, renderPages, mount, overflowing, buildPdf, pdfName };
+  window.GDM = { savePdf, PAGE_W, PAGE_H, ART, IMG, TEXTOS, DEFAULTS, SECOES, CAMPOS, VERSAO, textosDe, whatsDigits, clone, esc, fmtMoney, BRL,
+    reaisExtenso, inteiroExtenso, slugify, todayISO, dataExtensa, dataLonga, renderPages, mount, overflowing, buildPdf, pdfName, nomeVisivel, oculto };
 })();

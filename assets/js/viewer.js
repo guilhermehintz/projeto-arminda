@@ -26,15 +26,17 @@
       if (!r.ok) return msg("Não foi possível abrir", "Tente novamente em alguns instantes.");
       data = p;
       const textos = G.textosDe(p);
-      document.title = "Proposta " + p.cliente + " · GDM Estratégia Fiscal";
-      $("vCli").textContent = p.cliente;
-      $("vMeta").textContent = G.fmtMoney(p.valor) + " · válida por " + (p.validade || 30) + " dias a partir de " + String(p.data || "").split("-").reverse().join("/");
+      const nome = G.nomeVisivel(p), hide = k => G.oculto(p, k);
+      document.title = (nome ? "Proposta " + nome : "Proposta") + " · GDM Estratégia Fiscal";
+      $("vCli").textContent = nome || "o seu negócio";
+      $("vMeta").textContent = [hide("valor") ? "" : G.fmtMoney(p.valor),
+        hide("validade") ? "" : "válida por " + (p.validade || 30) + " dias" + (hide("data") ? "" : " a partir de " + String(p.data || "").split("-").reverse().join("/"))].filter(Boolean).join(" · ");
       $("vhero").hidden = false; $("vbtns").hidden = false;
-      $("vWa").href = "https://wa.me/" + G.whatsDigits(textos.contra.whatsapp) + "?text=" + encodeURIComponent("Olá! Recebi a proposta da GDM para " + p.cliente + " e gostaria de conversar.");
+      $("vWa").href = "https://wa.me/" + G.whatsDigits(textos.contra.whatsapp) + "?text=" + encodeURIComponent("Olá! Recebi a proposta da GDM" + (nome ? " para " + nome : "") + " e gostaria de conversar.");
       draw();
       if (GDMIntro.active()) {
         GDMIntro.mark(introKey);
-        GDMIntro.type([["Proposta personalizada para ", "t1"], [p.cliente, "t2"]], "GDM Estratégia Fiscal <span>·</span> " + G.esc(textos.contra.tag || "Estratégia fiscal para o agro crescer"));
+        GDMIntro.type(nome ? [["Proposta personalizada para ", "t1"], [nome, "t2"]] : [["Proposta ", "t1"], ["personalizada", "t2"]], "GDM Estratégia Fiscal <span>·</span> " + G.esc(textos.contra.tag || "Estratégia fiscal para o agro crescer"));
       }
     } catch (e) { msg("Sem conexão", "Verifique a internet e recarregue a página."); }
   }
@@ -50,5 +52,6 @@
   };
   let rz = null;
   new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(draw, 90); }).observe(document.body);
+  if (document.fonts) document.fonts.ready.then(draw);
   load();
 })();

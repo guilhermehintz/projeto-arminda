@@ -53,6 +53,8 @@ export function cleanTextos(v, depth = 0) {
   return undefined;
 }
 
+const OCULTAVEIS = ["cliente", "valor", "condicao", "obs", "assunto", "contexto", "exito", "data", "validade", "cidade", "resp"];
+
 // Mantém só os campos conhecidos, com limites de tamanho.
 export function cleanProposal(p) {
   const valor = Math.max(0, Math.min(99999999999, Math.round(Number(p.valor) || 0)));
@@ -60,9 +62,12 @@ export function cleanProposal(p) {
   const data = /^\d{4}-\d{2}-\d{2}$/.test(p.data || "") ? p.data : new Date().toISOString().slice(0, 10);
   const textos = cleanTextos(p.textos && typeof p.textos === "object" ? p.textos : {}) || {};
   if (JSON.stringify(textos).length > 120000) throw Object.assign(new Error("Os textos ficaram grandes demais."), { status: 413 });
+  // Campos da aba Dados que o usuário tirou da proposta.
+  const ocultar = {};
+  for (const k of OCULTAVEIS) if (p.ocultar && p.ocultar[k] === true) ocultar[k] = true;
   return {
     cliente: str(p.cliente, 80).trim(), valor, condicao: str(p.condicao, 140), obs: str(p.obs, 700),
     assunto: str(p.assunto, 180), contexto: str(p.contexto, 900), exito: str(p.exito, 140),
-    data, validade, cidade: str(p.cidade, 60), resp: str(p.resp, 80), textos
+    data, validade, cidade: str(p.cidade, 60), resp: str(p.resp, 80), textos, ocultar
   };
 }

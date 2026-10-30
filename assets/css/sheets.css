@@ -67,7 +67,12 @@
 .sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:auto}
 .sign div{border-top:1px solid var(--g-800);padding-top:10px}
 .sign b{display:block;font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--g-800)}
-.sign small{font-size:11px;color:var(--ink-2)}
+.sign small{display:block;font-size:11px;color:var(--ink-2)}
+.shead:not(:first-child){margin-top:10px}
+.grp-h{font-family:var(--display);font-weight:600;font-size:13.5px;color:var(--g-800);margin:0}
+.pg .body>.dots-c{margin-top:-15px}
+.pg .body>.dots-c:first-child{margin-top:0}
+.fecho{display:flex;flex-direction:column;gap:6px}
 
 /* capa e contracapa */
 .pg.dark{background:var(--g-800);color:#E9E6D3}
